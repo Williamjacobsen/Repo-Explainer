@@ -1,8 +1,11 @@
 package parser
 
-/*Returns an element of type HTMLNodeElement*/
-func GetElementByXpath() HTMLNodeElement {
-	return HTMLNodeElement{}
+func GetElementByXpath() HTMLNode {
+	return HTMLNode{}
+}
+
+func GetTag() {
+
 }
 
 func CountChildren() {
