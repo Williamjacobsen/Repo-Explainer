@@ -6,7 +6,7 @@ import (
 	"net/http"
 )
 
-func FetchTree(git_url string) {
+func FetchDirectory(git_url string) {
 
 	resp, err := http.Get(git_url)
 	if err != nil {

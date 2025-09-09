@@ -1,7 +1,9 @@
 package main
 
-import "github.com/Williamjacobsen/Repo-Explainer/backend/internal/githubapi"
+import (
+	fetch_tree "github.com/Williamjacobsen/Repo-Explainer/backend/internal/service"
+)
 
 func main() {
-	githubapi.FetchTree("https://github.com/Williamjacobsen/Repo-Explainer/tree/main")
+	fetch_tree.FetchTree("https://github.com/Williamjacobsen/ClosedAI/tree/main")
 }
