@@ -1,6 +1,9 @@
 package parser
 
-import "fmt"
+import (
+	"fmt"
+	"strings"
+)
 
 /*
 Get children from:
@@ -13,14 +16,19 @@ Get href from:
 */
 
 func ParseDirectory(body string) []string {
-	node := GetElementByXpath("/html")
+	node := GetElementByXpath(body, "/html/body/div")
 	
 	fmt.Printf("Tag: %s, Position: %d\n", node.Tag, node.Position)
 
 	return []string{}
 }
 
-func GetElementByXpath(XPath string) HTMLNode {
+func GetElementByXpath(body string, xpath string) HTMLNode {
+
+	nodes := strings.Split(xpath[1:], "/")
+
+	fmt.Printf("Nodes: %s\n", nodes)
+
 	return HTMLNode{Tag: "test", Position: 1}
 }
 
