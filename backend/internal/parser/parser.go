@@ -26,8 +26,28 @@ func ParseDirectory(body string) []string {
 func GetElementByXpath(body string, xpath string) HTMLNode {
 
 	nodes := strings.Split(xpath[1:], "/")
-
+	
 	fmt.Printf("Nodes: %s\n", nodes)
+
+	tag := ""
+	isTag := false
+	for _, r := range body {
+		if r == '<' {
+			isTag = true
+			continue
+		} else if r == '>' {
+			isTag = false
+			fmt.Printf("%s\n", tag)
+			tag = ""
+			continue
+		}
+		
+		if isTag {
+			tag += string(r)
+		}
+		
+		//fmt.Printf("%c", r)
+	}
 
 	return HTMLNode{Tag: "test", Position: 1}
 }
