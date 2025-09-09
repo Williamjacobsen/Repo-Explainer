@@ -6,7 +6,7 @@ import (
 	"net/http"
 )
 
-func FetchDirectory(git_url string) {
+func FetchPage(git_url string) string {
 
 	resp, err := http.Get(git_url)
 	if err != nil {
@@ -24,5 +24,5 @@ func FetchDirectory(git_url string) {
 	}
 
 	fmt.Println(string(body))
-
+	return string(body)
 }
