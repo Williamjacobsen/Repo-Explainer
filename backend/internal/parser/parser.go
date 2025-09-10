@@ -24,36 +24,45 @@ func ParseDirectory(body string) []string {
 }
 
 func GetElementByXpath(body string, xpath string) HTMLNode {
-
 	nodes := strings.Split(xpath[1:], "/")
 	
 	fmt.Printf("Nodes: %s\n", nodes)
+	fmt.Printf("First node: %s\n", nodes[0])
 
-	tag := ""
-	isTag := false
-	for _, r := range body {
-		if r == '<' {
-			isTag = true
-			continue
-		} else if r == '>' {
-			isTag = false
-			fmt.Printf("%s\n", tag)
-			tag = ""
-			continue
-		}
-		
-		if isTag {
-			tag += string(r)
-		}
-		
-		//fmt.Printf("%c", r)
+	_HTMLNode, success := GetNextTag(body, nodes[0], 0)
+	if !success {
+		fmt.Printf("Tag <%s> not found in body\n", nodes[0])
+    	return HTMLNode{}	
 	}
+
+	fmt.Printf("%s, %d\n", _HTMLNode.Tag, _HTMLNode.Position)
 
 	return HTMLNode{Tag: "test", Position: 1}
 }
 
-func GetTag() {
+func GetNextTag(body string, nextTag string, currentPosition int) (HTMLNode, bool) {
+	tag := ""
+	isTag := false
+	for i := 0; i < len(body); i++ {
+		if body[i] == '<' {
+			isTag = true
+			continue
+		} else if isTag && (body[i] == '>' || body[i] == ' ') {
+			fmt.Printf("%s\n", tag)
+			if nextTag == strings.TrimSpace(tag) {
+				return HTMLNode{Tag: strings.TrimSpace(tag), Position: i}, true
+			}
+			tag = ""
+			isTag = false
+			continue
+		}
 
+		if isTag {
+			tag += string(body[i])
+		}
+	}
+	
+	return HTMLNode{}, false
 }
 
 func CountChildren() {
