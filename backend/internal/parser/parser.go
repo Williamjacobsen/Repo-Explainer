@@ -2,6 +2,7 @@ package parser
 
 import (
 	"fmt"
+	"os"
 	"strconv"
 	"strings"
 )
@@ -26,38 +27,40 @@ func ParseDirectory(body string) []string {
 
 func GetElementByXpath(body string, xpath string) HTMLNode {
 	nodes := strings.Split(xpath[1:], "/")
-	
+
 	fmt.Printf("Nodes: %s\n", nodes)
 
-	for _, node := range nodes {
-		fmt.Printf("Next node: %s\n", node)
-		parsedNode, containsSuffix := GetIndexSuffix(node)
-		if containsSuffix {
-			fmt.Printf("ParsedNode: %s, %d\n", parsedNode.Tag, parsedNode.IndexSuffix)
-		}
+	var _HTMLNode HTMLNode
 
-		_HTMLNode, success := GetNextTag(body, node, 0)
+	for _, node := range nodes {
+		parsedNode := ParseTag(node)
+
+		fmt.Printf("ParsedNode: %s, %d\n", parsedNode.Tag, parsedNode.IndexSuffix)
+
+		_HTMLNode, success := GetNextTag(body, parsedNode.Tag, _HTMLNode.Position)
 		if !success {
-			fmt.Printf("Tag <%s> not found in body\n", node)
+			fmt.Printf("Tag <%s> not found in body\n", parsedNode.Tag)
 			return HTMLNode{}	
 		}
 
-		fmt.Printf("%s, %d\n", _HTMLNode.Tag, _HTMLNode.Position)
+		fmt.Printf("%s, %d\n\n", _HTMLNode.Tag, _HTMLNode.Position)
 	}
 	
 	return HTMLNode{Tag: "test", Position: 1}
 }
 
-func GetNextTag(body string, nextTag string, currentPosition int) (HTMLNode, bool) {
+func GetNextTag(body string, nextTag string, documentPosition int) (HTMLNode, bool) {
 	tag := ""
 	isTag := false
-	for i := 0; i < len(body); i++ {
+	for i := documentPosition; i < len(body); i++ {
 		if body[i] == '<' {
 			isTag = true
 			continue
 		} else if isTag && (body[i] == '>' || body[i] == ' ') {
-			if nextTag == strings.TrimSpace(tag) {
-				return HTMLNode{Tag: strings.TrimSpace(tag), Position: i}, true
+			tag = strings.TrimSpace(tag)
+
+			if nextTag == tag {
+				return HTMLNode{Tag: tag, Position: i}, true
 			}
 			tag = ""
 			isTag = false
@@ -72,10 +75,10 @@ func GetNextTag(body string, nextTag string, currentPosition int) (HTMLNode, boo
 	return HTMLNode{}, false
 }
 
-func GetIndexSuffix(tag string) (HTMLTag, bool) {
+func ParseTag(tag string) HTMLTag {
 	indexStart := strings.Index(tag, "[")
 	if indexStart == -1 {
-		return HTMLTag{}, false
+		return HTMLTag{Tag: tag, IndexSuffix: 1}
 	}
 	indexSuffix := ""
 	for i := indexStart + 1; i < len(tag); i++ {
@@ -87,10 +90,12 @@ func GetIndexSuffix(tag string) (HTMLTag, bool) {
 
 	index, err := strconv.Atoi(indexSuffix) 
 	if err != nil {
-		return HTMLTag{}, false
+		fmt.Fprintf(os.Stderr, "Error converting indexSuffix '%s' to int: %v\n", indexSuffix, err)
+		os.Exit(1)
+		return HTMLTag{}
 	}
 
-	return HTMLTag{Tag: tag[:indexStart], IndexSuffix: index}, true
+	return HTMLTag{Tag: tag[:indexStart], IndexSuffix: index}
 }
 
 func CountChildren() {

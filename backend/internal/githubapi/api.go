@@ -23,6 +23,6 @@ func FetchPage(git_url string) string {
 		panic(err)
 	}
 
-	fmt.Println(string(body))
+	//fmt.Println(string(body))
 	return string(body)
 }
