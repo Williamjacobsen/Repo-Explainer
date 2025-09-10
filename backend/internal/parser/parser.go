@@ -39,7 +39,7 @@ func GetElementByXpath(body string, xpath string) HTMLNode {
 
 		fmt.Printf("GetNextTag(%s, %s, %d)\n", "body", parsedNode.Tag, documentPosition)
 
-		_HTMLNode, success := GetNextTag(body, parsedNode.Tag, documentPosition)
+		_HTMLNode, success := GetNextTag(body, parsedNode.Tag, parsedNode.IndexSuffix, documentPosition)
 		if !success {
 			fmt.Printf("Tag <%s> not found in body\n", parsedNode.Tag)
 			return HTMLNode{}
@@ -53,7 +53,7 @@ func GetElementByXpath(body string, xpath string) HTMLNode {
 	return HTMLNode{Tag: "test", Position: 1}
 }
 
-func GetNextTag(body string, nextTag string, documentPosition int) (HTMLNode, bool) {
+func GetNextTag(body string, nextTag string, nextTagIndex int, documentPosition int) (HTMLNode, bool) {
 	tag := ""
 	isTag := false
 
@@ -65,8 +65,16 @@ func GetNextTag(body string, nextTag string, documentPosition int) (HTMLNode, bo
 		} else if isTag && (body[i] == '>' || body[i] == ' ') {
 			tag = strings.TrimSpace(tag)
 
-			if nextTag == tag {
+			if body[i] == '/' {
+				tag = ""
+				isTag = false
+				continue
+			}
+
+			if nextTag == tag && nextTagIndex == 1 {
 				return HTMLNode{Tag: tag, Position: i}, true
+			} else if nextTagIndex > 1 {
+				nextTagIndex--
 			}
 
 			tag = ""
