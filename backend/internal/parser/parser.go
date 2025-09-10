@@ -2,6 +2,7 @@ package parser
 
 import (
 	"fmt"
+	"strconv"
 	"strings"
 )
 
@@ -16,7 +17,7 @@ Get href from:
 */
 
 func ParseDirectory(body string) []string {
-	node := GetElementByXpath(body, "/html/body/div")
+	node := GetElementByXpath(body, "/html/body/div[1]/div[4]")
 	
 	fmt.Printf("Tag: %s, Position: %d\n", node.Tag, node.Position)
 
@@ -30,10 +31,14 @@ func GetElementByXpath(body string, xpath string) HTMLNode {
 
 	for _, node := range nodes {
 		fmt.Printf("Next node: %s\n", node)
+		parsedNode, containsSuffix := GetIndexSuffix(node)
+		if containsSuffix {
+			fmt.Printf("ParsedNode: %s, %d\n", parsedNode.Tag, parsedNode.IndexSuffix)
+		}
 
 		_HTMLNode, success := GetNextTag(body, node, 0)
 		if !success {
-			fmt.Printf("Tag <%s> not found in body\n", nodes[0])
+			fmt.Printf("Tag <%s> not found in body\n", node)
 			return HTMLNode{}	
 		}
 
@@ -51,7 +56,6 @@ func GetNextTag(body string, nextTag string, currentPosition int) (HTMLNode, boo
 			isTag = true
 			continue
 		} else if isTag && (body[i] == '>' || body[i] == ' ') {
-			//fmt.Printf("%s\n", tag)
 			if nextTag == strings.TrimSpace(tag) {
 				return HTMLNode{Tag: strings.TrimSpace(tag), Position: i}, true
 			}
@@ -66,6 +70,27 @@ func GetNextTag(body string, nextTag string, currentPosition int) (HTMLNode, boo
 	}
 	
 	return HTMLNode{}, false
+}
+
+func GetIndexSuffix(tag string) (HTMLTag, bool) {
+	indexStart := strings.Index(tag, "[")
+	if indexStart == -1 {
+		return HTMLTag{}, false
+	}
+	indexSuffix := ""
+	for i := indexStart + 1; i < len(tag); i++ {
+		if tag[i] == ']' {
+			break
+		}
+		indexSuffix += string(tag[i])
+	}
+
+	index, err := strconv.Atoi(indexSuffix) 
+	if err != nil {
+		return HTMLTag{}, false
+	}
+
+	return HTMLTag{Tag: tag[:indexStart], IndexSuffix: index}, true
 }
 
 func CountChildren() {
