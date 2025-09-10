@@ -19,7 +19,7 @@ Get href from:
 
 func ParseDirectory(body string) []string {
 	node := GetElementByXpath(body, "/html/body/div[1]/div[4]")
-	
+
 	fmt.Printf("Tag: %s, Position: %d\n", node.Tag, node.Position)
 
 	return []string{}
@@ -30,38 +30,45 @@ func GetElementByXpath(body string, xpath string) HTMLNode {
 
 	fmt.Printf("Nodes: %s\n", nodes)
 
-	var _HTMLNode HTMLNode
+	documentPosition := 0
 
 	for _, node := range nodes {
 		parsedNode := ParseTag(node)
 
 		fmt.Printf("ParsedNode: %s, %d\n", parsedNode.Tag, parsedNode.IndexSuffix)
 
-		_HTMLNode, success := GetNextTag(body, parsedNode.Tag, _HTMLNode.Position)
+		fmt.Printf("GetNextTag(%s, %s, %d)\n", "body", parsedNode.Tag, documentPosition)
+
+		_HTMLNode, success := GetNextTag(body, parsedNode.Tag, documentPosition)
 		if !success {
 			fmt.Printf("Tag <%s> not found in body\n", parsedNode.Tag)
-			return HTMLNode{}	
+			return HTMLNode{}
 		}
 
-		fmt.Printf("%s, %d\n\n", _HTMLNode.Tag, _HTMLNode.Position)
-	}
+		documentPosition = _HTMLNode.Position
 	
+		fmt.Print("\n")
+	}
+
 	return HTMLNode{Tag: "test", Position: 1}
 }
 
 func GetNextTag(body string, nextTag string, documentPosition int) (HTMLNode, bool) {
 	tag := ""
 	isTag := false
+
 	for i := documentPosition; i < len(body); i++ {
 		if body[i] == '<' {
 			isTag = true
 			continue
+
 		} else if isTag && (body[i] == '>' || body[i] == ' ') {
 			tag = strings.TrimSpace(tag)
 
 			if nextTag == tag {
 				return HTMLNode{Tag: tag, Position: i}, true
 			}
+
 			tag = ""
 			isTag = false
 			continue
@@ -71,7 +78,7 @@ func GetNextTag(body string, nextTag string, documentPosition int) (HTMLNode, bo
 			tag += string(body[i])
 		}
 	}
-	
+
 	return HTMLNode{}, false
 }
 
@@ -88,7 +95,7 @@ func ParseTag(tag string) HTMLTag {
 		indexSuffix += string(tag[i])
 	}
 
-	index, err := strconv.Atoi(indexSuffix) 
+	index, err := strconv.Atoi(indexSuffix)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error converting indexSuffix '%s' to int: %v\n", indexSuffix, err)
 		os.Exit(1)
