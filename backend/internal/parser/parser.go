@@ -46,7 +46,7 @@ func GetElementByXpath(body string, xpath string) HTMLNode {
 		}
 
 		documentPosition = _HTMLNode.Position
-	
+
 		fmt.Print("\n")
 	}
 
@@ -111,6 +111,10 @@ func ParseTag(tag string) HTMLTag {
 	}
 
 	return HTMLTag{Tag: tag[:indexStart], IndexSuffix: index}
+}
+
+func GetText() {
+
 }
 
 func CountChildren() {
