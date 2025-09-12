@@ -19,6 +19,7 @@ Get href from:
 
 func ParseDirectory(body string) []string {
 	node := GetElementByXpath(body, "/html/body/div[1]/div[4]/div/main/turbo-frame/div/div/div/div/div[1]/react-partial/div/div/div[3]/div[1]/table/tbody/tr[2]/td[2]/div/div/div/div/a")
+	node = GetElementByXpath(body, "/html/body/div[1]/div[4]/div/main/turbo-frame/div/div/div/div/div[1]/react-partial/div/div/div[3]/div[1]/table/tbody/tr[4]/td[2]/div/div/div/div/a")
 
 	fmt.Printf("Tag: %s, Position: %d\n", node.Tag, node.Position)
 
@@ -52,6 +53,7 @@ func GetElementByXpath(body string, xpath string) HTMLNode {
 
 	attributes := GetAttributes(body, documentPosition)
 	fmt.Println(attributes)
+	fmt.Printf("Label: %s\n", attributes["aria-label"])
 	
 	return HTMLNode{Tag: "test", Position: 1}
 }
@@ -133,6 +135,15 @@ func GetAttributes(body string, documentPosition int) map[string]string {
 			attribute = ""
 		} else {
 			attribute += string(body[i])
+		}
+	}
+	
+	if attribute != "" {
+		parts := strings.SplitN(attribute, "=", 2)	
+		if len(parts) == 2 {
+			key := parts[0]
+			value := strings.Trim(parts[1], `"`)
+			attributes[key] = value
 		}
 	}
 	
