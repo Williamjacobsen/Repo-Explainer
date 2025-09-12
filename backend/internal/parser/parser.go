@@ -18,10 +18,10 @@ Get href from:
 */
 
 func ParseDirectory(body string) []string {
-	node := GetElementByXpath(body, "/html/body/div[1]/div[4]/div/main/turbo-frame/div/div/div/div/div[1]/react-partial/div/div/div[3]/div[1]/table/tbody/tr[2]/td[2]/div/div/div/div/a")
-	node = GetElementByXpath(body, "/html/body/div[1]/div[4]/div/main/turbo-frame/div/div/div/div/div[1]/react-partial/div/div/div[3]/div[1]/table/tbody/tr[4]/td[2]/div/div/div/div/a")
+	//node := GetElementByXpath(body, "/html/body/div[1]/div[4]/div/main/turbo-frame/div/div/div/div/div[1]/react-partial/div/div/div[3]/div[1]/table/tbody/tr[2]/td[2]/div/div/div/div/a")
+	//fmt.Printf("Tag: %s, Position: %d\n", node.Tag, node.Position)
 
-	fmt.Printf("Tag: %s, Position: %d\n", node.Tag, node.Position)
+	CountChildren(body, "/html/body/div[1]/div[4]/div/main/turbo-frame/div/div/div/div/div[1]/react-partial/div/div/div[3]/div[1]/table/tbody")
 
 	return []string{}
 }
@@ -34,7 +34,7 @@ func GetElementByXpath(body string, xpath string) HTMLNode {
 	documentPosition := 0
 
 	for _, node := range nodes {
-		parsedNode := ParseTag(node)
+		parsedNode := ParseXpathTag(node)
 
 		fmt.Printf("ParsedNode: %s, %d\n", parsedNode.Tag, parsedNode.IndexSuffix)
 
@@ -55,7 +55,8 @@ func GetElementByXpath(body string, xpath string) HTMLNode {
 	fmt.Println(attributes)
 	fmt.Printf("Label: %s\n", attributes["aria-label"])
 	
-	return HTMLNode{Tag: "test", Position: 1}
+	// Current documentPosition is after the tag is closed
+	return HTMLNode{Tag: "test", Position: documentPosition+1}
 }
 
 func GetNextTag(body string, nextTag string, nextTagIndex int, documentPosition int) (HTMLNode, bool) {
@@ -95,7 +96,7 @@ func GetNextTag(body string, nextTag string, nextTagIndex int, documentPosition 
 	return HTMLNode{}, false
 }
 
-func ParseTag(tag string) HTMLTag {
+func ParseXpathTag(tag string) HTMLTag {
 	indexStart := strings.Index(tag, "[")
 	if indexStart == -1 {
 		return HTMLTag{Tag: tag, IndexSuffix: 1}
@@ -119,6 +120,9 @@ func ParseTag(tag string) HTMLTag {
 }
 
 func GetAttributes(body string, documentPosition int) map[string]string {
+	
+	// TODO / BUG FIX: map[<tr class:DirectoryContent-module__Box_3--zI0N1]
+
 	attributes := make(map[string]string)
 	var attribute string
 	for i := documentPosition + 1; i < len(body); i++ {
@@ -150,8 +154,29 @@ func GetAttributes(body string, documentPosition int) map[string]string {
 	return attributes
 }
 
-func CountChildren() {
+func CountChildren(body string, xpath string) int {
+	_HTMLNode := GetElementByXpath(body, xpath)
 
+	fmt.Println(_HTMLNode.Position)
+
+	IsClosingTag(body, _HTMLNode.Position)
+
+	// TODO: count open and closed tags until they match
+
+	return -1;
+}
+
+func IsClosingTag(body string, documentPosition int) bool {
+	for i := documentPosition - 1; i > documentPosition - 100; i-- {
+		switch body[i] {
+		case '/':
+			return false
+		case '<': // Reverse
+			return true
+		}
+	}
+
+	return false
 }
 
 func GetHref() {
