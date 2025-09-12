@@ -52,7 +52,7 @@ func GetElementByXpath(body string, xpath string) HTMLNode {
 
 	attributes := GetAttributes(body, documentPosition)
 	fmt.Println(attributes)
-
+	
 	return HTMLNode{Tag: "test", Position: 1}
 }
 
@@ -116,20 +116,26 @@ func ParseTag(tag string) HTMLTag {
 	return HTMLTag{Tag: tag[:indexStart], IndexSuffix: index}
 }
 
-func GetAttributes(body string, documentPosition int) []string {
-	var attributes []string
+func GetAttributes(body string, documentPosition int) map[string]string {
+	attributes := make(map[string]string)
 	var attribute string
 	for i := documentPosition + 1; i < len(body); i++ {
 		if body[i] == '>' {
 			break;
 		} else if body[i] == ' ' && body[i-1] == '"' {
-			attributes = append(attributes, attribute)
+			parts := strings.SplitN(attribute, "=", 2)	
+			if len(parts) == 2 {
+				key := parts[0]
+				value := strings.Trim(parts[1], `"`)
+				attributes[key] = value
+			}
+
 			attribute = ""
 		} else {
 			attribute += string(body[i])
 		}
 	}
-
+	
 	return attributes
 }
 
