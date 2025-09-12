@@ -18,7 +18,7 @@ Get href from:
 */
 
 func ParseDirectory(body string) []string {
-	node := GetElementByXpath(body, "/html/body/div[1]/div[4]")
+	node := GetElementByXpath(body, "/html/body/div[1]/div[4]/div/main/turbo-frame/div/div/div/div/div[1]/react-partial/div/div/div[3]/div[1]/table/tbody/tr[2]/td[2]/div/div/div/div/a")
 
 	fmt.Printf("Tag: %s, Position: %d\n", node.Tag, node.Position)
 
@@ -50,6 +50,9 @@ func GetElementByXpath(body string, xpath string) HTMLNode {
 		fmt.Print("\n")
 	}
 
+	attributes := GetAttributes(body, documentPosition)
+	fmt.Println(attributes)
+
 	return HTMLNode{Tag: "test", Position: 1}
 }
 
@@ -73,7 +76,7 @@ func GetNextTag(body string, nextTag string, nextTagIndex int, documentPosition 
 
 			if nextTag == tag && nextTagIndex == 1 {
 				return HTMLNode{Tag: tag, Position: i}, true
-			} else if nextTagIndex > 1 {
+			} else if nextTag == tag && nextTagIndex > 1 {
 				nextTagIndex--
 			}
 
@@ -113,8 +116,21 @@ func ParseTag(tag string) HTMLTag {
 	return HTMLTag{Tag: tag[:indexStart], IndexSuffix: index}
 }
 
-func GetText() {
+func GetAttributes(body string, documentPosition int) []string {
+	var attributes []string
+	var attribute string
+	for i := documentPosition + 1; i < len(body); i++ {
+		if body[i] == '>' {
+			break;
+		} else if body[i] == ' ' && body[i-1] == '"' {
+			attributes = append(attributes, attribute)
+			attribute = ""
+		} else {
+			attribute += string(body[i])
+		}
+	}
 
+	return attributes
 }
 
 func CountChildren() {
