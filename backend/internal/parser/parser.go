@@ -158,25 +158,38 @@ func CountChildren(body string, xpath string) int {
 	_HTMLNode := GetElementByXpath(body, xpath)
 
 	fmt.Println(_HTMLNode.Position)
+	
+	tagName := GetCurrentTag(body, _HTMLNode.Position)
+	fmt.Println(tagName)	
 
-	IsClosingTag(body, _HTMLNode.Position)
-
-	// TODO: count open and closed tags until they match
+	isClosingTag := IsClosingTag(body, _HTMLNode.Position)
+	fmt.Println(isClosingTag)
 
 	return -1;
 }
 
-func IsClosingTag(body string, documentPosition int) bool {
-	for i := documentPosition - 1; i > documentPosition - 100; i-- {
+func IsClosingTag(body string, documentPosition int) bool { 
+	for i := documentPosition - 1; i > 0; i-- {
 		switch body[i] {
 		case '/':
-			return false
-		case '<': // Reverse
 			return true
+		case '<':
+			return false
 		}
 	}
 
 	return false
+}
+
+func GetCurrentTag(body string, documentPosition int) string {
+	var i int
+	for i = documentPosition - 1; i > 0; i-- {
+		if body[i] == '<' || body[i] == '/' { 
+			break
+		}	
+	}
+
+	return body[i+1:documentPosition-1]
 }
 
 func GetHref() {
