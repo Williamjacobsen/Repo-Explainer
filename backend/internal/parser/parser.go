@@ -191,7 +191,3 @@ func GetCurrentTag(body string, documentPosition int) string {
 
 	return body[i+1:documentPosition-1]
 }
-
-func GetHref() {
-
-}
