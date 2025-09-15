@@ -155,6 +155,9 @@ func GetAttributes(body string, documentPosition int) map[string]string {
 }
 
 func GetChildren(body string, xpath string) {
+	
+	// TODO: Make it work for div[3] etc
+	
 	_HTMLNode := GetElementByXpath(body, xpath)
 
 	fmt.Println(_HTMLNode.Position)
