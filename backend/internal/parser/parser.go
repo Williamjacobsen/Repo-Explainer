@@ -168,6 +168,8 @@ func GetChildren(body string, xpath string) {
 	isClosingTag := IsClosingTag(body, _HTMLNode.Position)
 	fmt.Println(isClosingTag)
 
+	childCount := 0
+
 	currentPath := xpath
 
 	isTag := false
@@ -216,10 +218,18 @@ func GetChildren(body string, xpath string) {
 			isTag = false
 			isOpeningTag = true
 			tag = ""
+
+			if xpath[:strings.LastIndex(xpath, "/")] == currentPath {
+				break
+			} else if xpath == currentPath {
+				childCount++;
+			}
+
 		}
 
 	}
 
+	fmt.Println(childCount)
 }
 
 func GetNameFromTag(tag string) string {
