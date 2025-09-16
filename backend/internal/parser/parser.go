@@ -154,10 +154,9 @@ func GetAttributes(body string, documentPosition int) map[string]string {
 	return attributes
 }
 
-func GetChildren(body string, xpath string) {
+// I should make a better way of traversing the DOM, like in GetChildren
 
-	// TODO: Make it work for div[3] etc
-
+func GetChildren(body string, xpath string) int {
 	_HTMLNode := GetElementByXpath(body, xpath)
 
 	fmt.Println(_HTMLNode.Position)
@@ -229,7 +228,9 @@ func GetChildren(body string, xpath string) {
 
 	}
 
-	fmt.Println(childCount)
+	fmt.Printf("ChildCount: %d\n", childCount)
+
+	return childCount
 }
 
 func GetNameFromTag(tag string) string {
