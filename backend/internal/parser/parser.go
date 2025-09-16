@@ -155,9 +155,9 @@ func GetAttributes(body string, documentPosition int) map[string]string {
 }
 
 func GetChildren(body string, xpath string) {
-	
+
 	// TODO: Make it work for div[3] etc
-	
+
 	_HTMLNode := GetElementByXpath(body, xpath)
 
 	fmt.Println(_HTMLNode.Position)
@@ -185,20 +185,33 @@ func GetChildren(body string, xpath string) {
 		}
 
 		if isTag {
-			tag += string(body[i])
+			if body[i] == '\n' {
+				tag += " "
+			} else {
+				tag += string(body[i])
+			}
 		}
 
 		if body[i] == '>' {
 			fmt.Println(tag)
-			if isOpeningTag {
+
+			if tag == "<br>" || tag[1] == '!' {
+				fmt.Println("Skipping: " + tag)
+			} else if isOpeningTag {
 				currentPath += "/" + GetNameFromTag(tag)
 			} else {
-				lastTag := currentPath[strings.LastIndex(currentPath, "/")+1:]
+				lastTag := ParseXpathTag(currentPath[strings.LastIndex(currentPath, "/")+1:]).Tag
 				if lastTag != GetNameFromTag(tag) {
+					PrintLinesAboveAndBelow(body, i)
 					panic("lastTag: " + lastTag + " tag: " + tag + " currentPath: " + currentPath)
 				}
 				currentPath = currentPath[:strings.LastIndex(currentPath, "/")]
 			}
+
+			if tag[len(tag)-2] == '/' {
+				currentPath = currentPath[:strings.LastIndex(currentPath, "/")]				
+			}
+
 			fmt.Println(currentPath)
 			isTag = false
 			isOpeningTag = true
@@ -239,4 +252,13 @@ func GetCurrentTag(body string, documentPosition int) string {
 	}
 
 	return body[i+1 : documentPosition-1]
+}
+
+func PrintLinesAboveAndBelow(body string, documentPosition int) {
+	fmt.Print("\nLines Above\n\n")
+	for i := documentPosition-200; i < documentPosition+200; i++ {
+		fmt.Print(string(body[i]))
+	}
+	fmt.Print("\n\nLines Below Ended\n")
+	fmt.Println()
 }
