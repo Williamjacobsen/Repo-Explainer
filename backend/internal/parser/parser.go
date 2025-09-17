@@ -7,24 +7,14 @@ import (
 	"strings"
 )
 
-func ParseRootDirectory(body string) []string {
-	childCount := GetChildren(body, "/html/body/div[1]/div[4]/div/main/turbo-frame/div/div/div/div/div[1]/react-partial/div/div/div[3]/div[1]/table/tbody")
-
-	for i := 2; i < childCount; i++ {
-		_HTMLNode := GetElementByXpath(body, fmt.Sprintf("/html/body/div[1]/div[4]/div/main/turbo-frame/div/div/div/div/div[1]/react-partial/div/div/div[3]/div[1]/table/tbody/tr[%d]/td[2]/div/div/div/div/a", i))
-		fmt.Printf("Label: %s\n", _HTMLNode.Tag)
-	}
-
-	return []string{}
-}
-
 func GetElementByXpath(body string, xpath string) HTMLNode {
 	nodes := strings.Split(xpath[1:], "/")
 
 	documentPosition := 0
 
+	var parsedNode HTMLTag
 	for _, node := range nodes {
-		parsedNode := ParseXpathTag(node)
+		parsedNode = ParseXpathTag(node)
 
 		_HTMLNode, success := GetNextTag(body, parsedNode.Tag, parsedNode.IndexSuffix, documentPosition)
 		if !success {
@@ -37,7 +27,7 @@ func GetElementByXpath(body string, xpath string) HTMLNode {
 
 	attributes := GetAttributes(body, documentPosition)
 
-	return HTMLNode{Tag: attributes["aria-label"], Position: documentPosition + 1}
+	return HTMLNode{Tag: parsedNode.Tag, Position: documentPosition + 1, attributes: attributes}
 }
 
 func GetNextTag(body string, nextTag string, nextTagIndex int, documentPosition int) (HTMLNode, bool) {
