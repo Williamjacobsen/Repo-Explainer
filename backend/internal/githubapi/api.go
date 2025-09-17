@@ -39,3 +39,18 @@ func ParseRootDirectory(body string) []parser.HTMLNode {
 
 	return HTMLNodes
 }
+
+func ParseSubDirectory(body string) []parser.HTMLNode {
+	childCount := parser.GetChildren(body, "/html/body/div[1]/div[4]/div/main/turbo-frame/div/react-app/div/div/div[1]/div/div/div[2]/div/div/div[3]/div[3]/div/table/tbody")
+
+	fmt.Printf("childCount: %d\n", childCount)
+
+	HTMLNodes := []parser.HTMLNode{}
+	for i := 2; i < childCount; i++ {
+		_HTMLNode := parser.GetElementByXpath(body, fmt.Sprintf("/html/body/div[1]/div[4]/div/main/turbo-frame/div/react-app/div/div/div[1]/div/div/div[2]/div/div/div[3]/div[3]/div/table/tbody/tr[%d]/td[2]/div/div/div/div/a", i))
+		fmt.Println(_HTMLNode)
+		HTMLNodes = append(HTMLNodes, _HTMLNode)
+	}
+
+	return HTMLNodes
+}

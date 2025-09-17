@@ -11,4 +11,6 @@ func FetchTree(url string) {
 	HTMLNodes := githubapi.ParseRootDirectory(body)
 
 	fmt.Println(HTMLNodes)
+
+	fmt.Println(githubapi.ParseSubDirectory(githubapi.FetchPage("https://github.com/Williamjacobsen/ClosedAI/tree/main/System%20Design")))
 }

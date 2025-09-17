@@ -18,7 +18,8 @@ func GetElementByXpath(body string, xpath string) HTMLNode {
 
 		_HTMLNode, success := GetNextTag(body, parsedNode.Tag, parsedNode.IndexSuffix, documentPosition)
 		if !success {
-			fmt.Printf("Tag <%s> not found in body\n", parsedNode.Tag)
+			fmt.Printf("\nTag <%s> not found in body\n\n", parsedNode.Tag)
+			PrintLinesAboveAndBelow(body, documentPosition)
 			return HTMLNode{}
 		}
 
@@ -42,7 +43,7 @@ func GetNextTag(body string, nextTag string, nextTagIndex int, documentPosition 
 		} else if isTag && (body[i] == '>' || body[i] == ' ') {
 			tag = strings.TrimSpace(tag)
 
-			if body[i] == '/' {
+			if body[i] == '/' { // will never run?
 				tag = ""
 				isTag = false
 				continue
@@ -223,10 +224,9 @@ func GetCurrentTag(body string, documentPosition int) string {
 }
 
 func PrintLinesAboveAndBelow(body string, documentPosition int) {
-	fmt.Print("\nLines Above\n\n")
-	for i := documentPosition-200; i < documentPosition+200; i++ {
-		fmt.Print(string(body[i]))
-	}
-	fmt.Print("\n\nLines Below Ended\n")
-	fmt.Println()
+    start := max(documentPosition - 200, 0)
+    end := min(documentPosition + 200, len(body))
+    fmt.Print("\nLines Above\n\n")
+    fmt.Print(body[start:end])
+    fmt.Print("\n\nLines Below Ended\n\n")
 }
