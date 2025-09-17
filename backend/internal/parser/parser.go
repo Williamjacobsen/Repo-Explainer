@@ -18,9 +18,8 @@ func GetElementByXpath(body string, xpath string) HTMLNode {
 
 		_HTMLNode, success := GetNextTag(body, parsedNode.Tag, parsedNode.IndexSuffix, documentPosition)
 		if !success {
-			fmt.Printf("\nTag <%s> not found in body\n\n", parsedNode.Tag)
 			PrintLinesAboveAndBelow(body, documentPosition)
-			return HTMLNode{}
+			panic(fmt.Sprintf("Tag <%s> not found in body", parsedNode.Tag))
 		}
 
 		documentPosition = _HTMLNode.Position
