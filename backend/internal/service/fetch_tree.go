@@ -7,5 +7,5 @@ import (
 
 func FetchTree(url string) {
 	body := githubapi.FetchPage(url)
-	parser.ParseDirectory(body)
+	parser.ParseRootDirectory(body)
 }

@@ -7,24 +7,12 @@ import (
 	"strings"
 )
 
-/*
-Get children from:
-/html/body/div[1]/div[4]/div/main/turbo-frame/div/div/div/div/div[1]/react-partial/div/div/div[3]/div[1]/table/tbody
-
-Go through child index 1 to length-2
-
-Get href from:
-/html/body/div[1]/div[4]/div/main/turbo-frame/div/div/div/div/div[1]/react-partial/div/div/div[3]/div[1]/table/tbody/tr[2]/td[2]/div/div/div/div/a
-*/
-
-func ParseDirectory(body string) []string {
+func ParseRootDirectory(body string) []string {
 	childCount := GetChildren(body, "/html/body/div[1]/div[4]/div/main/turbo-frame/div/div/div/div/div[1]/react-partial/div/div/div[3]/div[1]/table/tbody")
 
 	for i := 2; i < childCount; i++ {
 		_HTMLNode := GetElementByXpath(body, fmt.Sprintf("/html/body/div[1]/div[4]/div/main/turbo-frame/div/div/div/div/div[1]/react-partial/div/div/div[3]/div[1]/table/tbody/tr[%d]/td[2]/div/div/div/div/a", i))
 		fmt.Printf("Label: %s\n", _HTMLNode.Tag)
-		//node := GetElementByXpath(body, fmt.Sprintf("/html/body/div[1]/div[4]/div/main/turbo-frame/div/div/div/div/div[1]/react-partial/div/div/div[3]/div[1]/table/tbody/tr[%d]/td[2]/div/div/div/div/a", i))
-		//fmt.Printf("Tag: %s, Position: %d\n", node.Tag, node.Position)		
 	}
 
 	return []string{}
@@ -33,16 +21,10 @@ func ParseDirectory(body string) []string {
 func GetElementByXpath(body string, xpath string) HTMLNode {
 	nodes := strings.Split(xpath[1:], "/")
 
-	//fmt.:wf("Nodes: %s\n", nodes)
-
 	documentPosition := 0
 
 	for _, node := range nodes {
 		parsedNode := ParseXpathTag(node)
-
-		//fmt.Printf("ParsedNode: %s, %d\n", parsedNode.Tag, parsedNode.IndexSuffix)
-
-		//fmt.Printf("GetNextTag(%s, %s, %d)\n", "body", parsedNode.Tag, documentPosition)
 
 		_HTMLNode, success := GetNextTag(body, parsedNode.Tag, parsedNode.IndexSuffix, documentPosition)
 		if !success {
@@ -51,15 +33,10 @@ func GetElementByXpath(body string, xpath string) HTMLNode {
 		}
 
 		documentPosition = _HTMLNode.Position
-
-		//fmt.Print("\n")
 	}
 
 	attributes := GetAttributes(body, documentPosition)
-	//fmt.Println(attributes)
-	//fmt.Printf("Label: %s\n", attributes["aria-label"])
 
-	// Current documentPosition is after the tag is closed
 	return HTMLNode{Tag: attributes["aria-label"], Position: documentPosition + 1}
 }
 
@@ -190,10 +167,7 @@ func GetChildren(body string, xpath string) int {
 		}
 
 		if body[i] == '>' {
-			//fmt.Println(tag)
-
 			if tag == "<br>" || tag[1] == '!' {
-				//fmt.Println("Skipping: " + tag)
 			} else if isOpeningTag {
 				currentPath += "/" + GetNameFromTag(tag)
 			} else {
@@ -209,7 +183,6 @@ func GetChildren(body string, xpath string) int {
 				currentPath = currentPath[:strings.LastIndex(currentPath, "/")]				
 			}
 
-			//fmt.Println(currentPath)
 			isTag = false
 			isOpeningTag = true
 			tag = ""
@@ -223,8 +196,6 @@ func GetChildren(body string, xpath string) int {
 		}
 
 	}
-
-	//fmt.Printf("ChildCount: %d\n", childCount)
 
 	return childCount
 }
