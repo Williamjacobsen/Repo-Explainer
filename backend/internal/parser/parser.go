@@ -244,15 +244,31 @@ func GetNextTag2(body string, pos int) (Node, error) {
 			isTag = true
 		case '>':
 			tag = strings.TrimSpace(tag)
-			return Node{Tag: tag, Pos: i}, nil
+			tag = strings.Split(tag, " ")[0]
+			// TODO: also get attributes etc
+			return Node{Tag: tag, Pos: i+1}, nil
 		default:
 			if isTag {
-				tag += string(body[i])
+				if body[i] == '\n' {
+					tag += " "
+				} else {
+					tag += string(body[i])
+				}
 			}
 		}
 	}
 	
 	return Node{}, fmt.Errorf("could not find the next tag")
+}
+
+var skipTags = map[string]bool {
+	"script": true,
+	"style": true,
+	"meta": true,
+}
+
+func shouldSkip(tag string) bool {
+	return skipTags[tag]
 }
 
 type Node struct {
@@ -265,18 +281,27 @@ type Tree struct {
 	Children []*Tree
 }
 
-func GetRoot(body string) (*Tree, error) {
-	tag, err := GetNextTag2(body, 0)
-	if err != nil {
-		return nil, fmt.Errorf("could not get root")
-	}
+func GetRoot(body string, tree *Tree) (*Tree, error) {
+	var node Node
+	pos := 0
+	for {
+		var err error
+		node, err = GetNextTag2(body, pos)
+		if err != nil {
+			return nil, fmt.Errorf("could not get root")
+		}
 
-	fmt.Println(tag)
+		if node.Tag == "html" {
+			break
+		}
+
+		pos = node.Pos
+	}
 
 	root := &Tree{
 		Node: Node{
-			Tag:      "html",
-			Pos:      100,
+			Tag:      node.Tag,
+			Pos:      node.Pos,
 		},
 		Children: []*Tree{},
 	}
@@ -287,19 +312,23 @@ func GetRoot(body string) (*Tree, error) {
 func EnsureTreeExists(body string, tree *Tree) (*Tree, error) {
 	if tree == nil {
 		var err error
-		tree, err = GetRoot(body)
+		tree, err = GetRoot(body, tree)
 		if err != nil {
 			return nil, fmt.Errorf("failed to get root: %w", err)
 		}
 	}
 
-	fmt.Println(tree)
-
 	return tree, nil
 }
 
 func GetTagByXpath2(body string, xpath string, tree *Tree) (string, error) {
-	EnsureTreeExists(body, tree)
+	var err error
+	tree, err = EnsureTreeExists(body, tree)
+	if err != nil {
+		return "", fmt.Errorf("could not get root tag <html>")
+	}
+
+	fmt.Println(tree)
 
 	return "", nil
 }
