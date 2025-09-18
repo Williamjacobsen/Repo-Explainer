@@ -7,10 +7,10 @@ import (
 )
 
 func FetchTree(url string) {
-	body := githubapi.FetchPage(url)
-	HTMLNodes := githubapi.ParseRootDirectory(body)
+	//body := githubapi.FetchPage(url)
+	//HTMLNodes := githubapi.ParseRootDirectory(body)
 
-	fmt.Println(HTMLNodes)
+	//fmt.Println(HTMLNodes)
 
 	fmt.Println(githubapi.ParseSubDirectory(githubapi.FetchPage("https://github.com/Williamjacobsen/ClosedAI/tree/main/System%20Design")))
 }

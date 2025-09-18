@@ -170,7 +170,7 @@ func GetChildren(body string, xpath string) int {
 			}
 
 			if tag[len(tag)-2] == '/' {
-				currentPath = currentPath[:strings.LastIndex(currentPath, "/")]				
+				currentPath = currentPath[:strings.LastIndex(currentPath, "/")]
 			}
 
 			isTag = false
@@ -180,7 +180,7 @@ func GetChildren(body string, xpath string) int {
 			if xpath[:strings.LastIndex(xpath, "/")] == currentPath {
 				break
 			} else if xpath == currentPath {
-				childCount++;
+				childCount++
 			}
 
 		}
@@ -223,9 +223,77 @@ func GetCurrentTag(body string, documentPosition int) string {
 }
 
 func PrintLinesAboveAndBelow(body string, documentPosition int) {
-    start := max(documentPosition - 200, 0)
-    end := min(documentPosition + 200, len(body))
-    fmt.Print("\nLines Above\n\n")
-    fmt.Print(body[start:end])
-    fmt.Print("\n\nLines Below Ended\n\n")
+	start := max(documentPosition-200, 0)
+	end := min(documentPosition+200, len(body))
+	fmt.Print("\nLines Above\n\n")
+	fmt.Print(body[start:end])
+	fmt.Print("\n\nLines Below Ended\n\n")
+}
+
+func GetChildren2(body string, xpath string, tree *Tree) {
+	GetTagByXpath2(body, xpath, tree)
+}
+
+func GetNextTag2(body string, pos int) (string, error) {
+	tag := ""
+	isTag := false
+
+	for i := pos; i < len(body); i++ {
+		switch body[i] {
+		case '<':
+			isTag = true
+		case '>':
+			tag = strings.TrimSpace(tag)
+			return tag, nil
+		default:
+			if isTag {
+				tag += string(body[i])
+			}
+		}
+	}
+	
+	return "", fmt.Errorf("could not find the next tag")
+}
+
+type Tree struct {
+	Tag      string
+	Pos      int
+	Children []*Tree
+}
+
+func GetRoot(body string) (*Tree, error) {
+	tag, err := GetNextTag2(body, 0)
+	if err != nil {
+		return nil, fmt.Errorf("could not get root")
+	}
+
+	fmt.Println(tag)
+
+	root := &Tree{
+		Tag:      "html",
+		Pos:      100,
+		Children: []*Tree{},
+	}
+
+	return root, nil
+}
+
+func EnsureTreeExists(body string, tree *Tree) (*Tree, error) {
+	if tree == nil {
+		var err error
+		tree, err = GetRoot(body)
+		if err != nil {
+			return nil, fmt.Errorf("failed to get root: %w", err)
+		}
+	}
+
+	fmt.Println(tree)
+
+	return tree, nil
+}
+
+func GetTagByXpath2(body string, xpath string, tree *Tree) (string, error) {
+	EnsureTreeExists(body, tree)
+
+	return "", nil
 }
