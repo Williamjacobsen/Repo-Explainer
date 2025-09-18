@@ -344,8 +344,6 @@ func AppendNextTag(body string, tree *Tree) (*Tree, error) {
 		return tree, fmt.Errorf("could not get next tag")
 	}
 
-	fmt.Println(node)
-
 	child := &Tree{
 		Node: Node{
 			Tag: node.Tag,
@@ -358,14 +356,12 @@ func AppendNextTag(body string, tree *Tree) (*Tree, error) {
 
 	tree.Children = append(tree.Children, child)
 
-	fmt.Println(tree)
-
 	return child, nil
 }
 
 // -------------------- API stubs using the tree --------------------
 
-func GetTagByXpath2(body string, xpath string, tree *Tree) (string, error) {
+func GetTagByXpath2(body string, xpath string, tree *Tree) (*Tree, error) {
 	xpathNodes, err := ParseXpath2(xpath)
 	if err != nil {
 		panic(err)
@@ -376,26 +372,27 @@ func GetTagByXpath2(body string, xpath string, tree *Tree) (string, error) {
 	if tree == nil {
 		tree, err = EnsureTreeExists(body, tree)
 		if err != nil {
-			return "", fmt.Errorf("could not get root tag <html>: %w", err)
+			return &Tree{}, fmt.Errorf("could not get root tag <html>: %w", err)
 		} else if tree == nil {
-			return "", fmt.Errorf("EnsureTreeExists returned nil tree")
+			return &Tree{}, fmt.Errorf("EnsureTreeExists returned nil tree")
 		}
 	}
 
-	fmt.Println(tree)
+	child, _ := AppendNextTag(body, tree)
 
-	child, err := AppendNextTag(body, tree)
-	if err != nil {
-		return "", fmt.Errorf("could not append next tag")
-	}
+	child, _ = AppendNextTag(body, child)
 
-	fmt.Println(child)
+	child, _ = AppendNextTag(body, child)
 
-	return "", nil
+	child, _ = AppendNextTag(body, child)
+
+	return tree, nil
 }
 
 func GetChildren2(body string, xpath string, tree *Tree) {
-	GetTagByXpath2(body, xpath, tree)
+	tree, _ = GetTagByXpath2(body, xpath, tree)
+
+	PrintTree(tree)
 }
 
 // -------------------- helper functions --------------------
@@ -406,4 +403,20 @@ func PrintLinesAboveAndBelow(body string, documentPosition int) {
 	fmt.Print("\nLines Above\n\n")
 	fmt.Print(body[start:end])
 	fmt.Print("\n\nLines Below Ended\n\n")
+}
+
+func PrintTree(tree *Tree) {
+	printTreeRecursive(tree, 0)
+}
+
+func printTreeRecursive(tree *Tree, depth int) {
+	if tree == nil {
+		fmt.Println("<nil>")
+		return
+	}
+	indent := strings.Repeat(" ", depth)
+	fmt.Printf("%s<%s pos=%d>\n", indent, tree.Node.Tag, tree.Node.Pos)
+	for _, child := range tree.Children {
+		printTreeRecursive(child, depth+1)
+	}
 }
