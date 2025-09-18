@@ -373,18 +373,13 @@ func GetTagByXpath2(body string, xpath string, tree *Tree) (string, error) {
 
 	fmt.Println(xpathNodes)
 
-	t, err := EnsureTreeExists(body, tree)
-	if err != nil {
-		return "", fmt.Errorf("could not get root tag <html>: %w", err)
-	}
-	if t == nil {
-		return "", fmt.Errorf("EnsureTreeExists returned nil tree")
-	}
-
 	if tree == nil {
-		tree = t
-	} else if t != tree {
-		*tree = *t
+		tree, err = EnsureTreeExists(body, tree)
+		if err != nil {
+			return "", fmt.Errorf("could not get root tag <html>: %w", err)
+		} else if tree == nil {
+			return "", fmt.Errorf("EnsureTreeExists returned nil tree")
+		}
 	}
 
 	fmt.Println(tree)
