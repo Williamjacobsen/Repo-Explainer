@@ -234,7 +234,7 @@ func GetChildren2(body string, xpath string, tree *Tree) {
 	GetTagByXpath2(body, xpath, tree)
 }
 
-func GetNextTag2(body string, pos int) (string, error) {
+func GetNextTag2(body string, pos int) (Node, error) {
 	tag := ""
 	isTag := false
 
@@ -244,7 +244,7 @@ func GetNextTag2(body string, pos int) (string, error) {
 			isTag = true
 		case '>':
 			tag = strings.TrimSpace(tag)
-			return tag, nil
+			return Node{Tag: tag, Pos: i}, nil
 		default:
 			if isTag {
 				tag += string(body[i])
@@ -252,12 +252,16 @@ func GetNextTag2(body string, pos int) (string, error) {
 		}
 	}
 	
-	return "", fmt.Errorf("could not find the next tag")
+	return Node{}, fmt.Errorf("could not find the next tag")
+}
+
+type Node struct {
+	Tag string
+	Pos int
 }
 
 type Tree struct {
-	Tag      string
-	Pos      int
+	Node
 	Children []*Tree
 }
 
@@ -270,8 +274,10 @@ func GetRoot(body string) (*Tree, error) {
 	fmt.Println(tag)
 
 	root := &Tree{
-		Tag:      "html",
-		Pos:      100,
+		Node: Node{
+			Tag:      "html",
+			Pos:      100,
+		},
 		Children: []*Tree{},
 	}
 
