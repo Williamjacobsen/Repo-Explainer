@@ -222,17 +222,34 @@ func GetCurrentTag(body string, documentPosition int) string {
 	return body[i+1 : documentPosition-1]
 }
 
-func PrintLinesAboveAndBelow(body string, documentPosition int) {
-	start := max(documentPosition-200, 0)
-	end := min(documentPosition+200, len(body))
-	fmt.Print("\nLines Above\n\n")
-	fmt.Print(body[start:end])
-	fmt.Print("\n\nLines Below Ended\n\n")
+
+// -------------------- data types --------------------
+
+type Node struct {
+	Tag string
+	Pos int
 }
 
-func GetChildren2(body string, xpath string, tree *Tree) {
-	GetTagByXpath2(body, xpath, tree)
+type Tree struct {
+	Node
+	Children []*Tree
 }
+
+
+// -------------------- config --------------------
+
+var skipTags = map[string]bool {
+	"script": true,
+	"style": true,
+	"meta": true,
+}
+
+func ShouldSkip(tag string) bool {
+	return skipTags[tag]
+}
+
+
+// -------------------- parsing helpers --------------------
 
 func GetNextTag2(body string, pos int) (Node, error) {
 	tag := ""
@@ -261,25 +278,8 @@ func GetNextTag2(body string, pos int) (Node, error) {
 	return Node{}, fmt.Errorf("could not find the next tag")
 }
 
-var skipTags = map[string]bool {
-	"script": true,
-	"style": true,
-	"meta": true,
-}
 
-func shouldSkip(tag string) bool {
-	return skipTags[tag]
-}
-
-type Node struct {
-	Tag string
-	Pos int
-}
-
-type Tree struct {
-	Node
-	Children []*Tree
-}
+// -------------------- tree construction --------------------
 
 func GetRoot(body string, tree *Tree) (*Tree, error) {
 	var node Node
@@ -321,6 +321,9 @@ func EnsureTreeExists(body string, tree *Tree) (*Tree, error) {
 	return tree, nil
 }
 
+
+// -------------------- API stubs using the tree --------------------
+
 func GetTagByXpath2(body string, xpath string, tree *Tree) (string, error) {
 	var err error
 	tree, err = EnsureTreeExists(body, tree)
@@ -332,3 +335,19 @@ func GetTagByXpath2(body string, xpath string, tree *Tree) (string, error) {
 
 	return "", nil
 }
+
+func GetChildren2(body string, xpath string, tree *Tree) {
+	GetTagByXpath2(body, xpath, tree)
+}
+
+
+// -------------------- helper functions --------------------
+
+func PrintLinesAboveAndBelow(body string, documentPosition int) {
+	start := max(documentPosition-200, 0)
+	end := min(documentPosition+200, len(body))
+	fmt.Print("\nLines Above\n\n")
+	fmt.Print(body[start:end])
+	fmt.Print("\n\nLines Below Ended\n\n")
+}
+
