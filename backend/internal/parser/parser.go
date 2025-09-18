@@ -222,7 +222,6 @@ func GetCurrentTag(body string, documentPosition int) string {
 	return body[i+1 : documentPosition-1]
 }
 
-
 // -------------------- data types --------------------
 
 type Node struct {
@@ -233,21 +232,22 @@ type Node struct {
 type Tree struct {
 	Node
 	Children []*Tree
-}
 
+	Parent *Tree
+	childIndex int
+}
 
 // -------------------- config --------------------
 
-var skipTags = map[string]bool {
+var skipTags = map[string]bool{
 	"script": true,
-	"style": true,
-	"meta": true,
+	"style":  true,
+	"meta":   true,
 }
 
 func ShouldSkip(tag string) bool {
 	return skipTags[tag]
 }
-
 
 // -------------------- parsing helpers --------------------
 
@@ -263,7 +263,7 @@ func GetNextTag2(body string, pos int) (Node, error) {
 			tag = strings.TrimSpace(tag)
 			tag = strings.Split(tag, " ")[0]
 			// TODO: also get attributes etc
-			return Node{Tag: tag, Pos: i+1}, nil
+			return Node{Tag: tag, Pos: i + 1}, nil
 		default:
 			if isTag {
 				if body[i] == '\n' {
@@ -274,8 +274,25 @@ func GetNextTag2(body string, pos int) (Node, error) {
 			}
 		}
 	}
-	
+
 	return Node{}, fmt.Errorf("could not find the next tag")
+}
+
+func ParseXpath2(xpath string) ([]string, error) {
+	var xpathNodes []string
+	if xpath == "" {
+		return []string{}, fmt.Errorf("xpath is nothing")
+	}
+	if xpath[0] == '/' {
+		xpathNodes = strings.Split(xpath[1:], "/")
+	} else {
+		return []string{}, fmt.Errorf("xpath has a wrong format (doesn't start with '/')")
+	}
+	if len(xpathNodes) == 0 {
+		return []string{}, fmt.Errorf("len(xpathNodes) is 0")
+	}
+
+	return xpathNodes, nil
 }
 
 
@@ -300,8 +317,8 @@ func GetRoot(body string, tree *Tree) (*Tree, error) {
 
 	root := &Tree{
 		Node: Node{
-			Tag:      node.Tag,
-			Pos:      node.Pos,
+			Tag: node.Tag,
+			Pos: node.Pos,
 		},
 		Children: []*Tree{},
 	}
@@ -321,17 +338,63 @@ func EnsureTreeExists(body string, tree *Tree) (*Tree, error) {
 	return tree, nil
 }
 
+func AppendNextTag(body string, tree *Tree) (*Tree, error) {
+	node, err := GetNextTag2(body, tree.Node.Pos)
+	if err != nil {
+		return tree, fmt.Errorf("could not get next tag")
+	}
+
+	fmt.Println(node)
+
+	child := &Tree{
+		Node: Node{
+			Tag: node.Tag,
+			Pos: node.Pos,
+		},
+		Children: []*Tree{},
+		Parent: tree,
+		childIndex: len(tree.Children),
+	}
+
+	tree.Children = append(tree.Children, child)
+
+	fmt.Println(tree)
+
+	return child, nil
+}
 
 // -------------------- API stubs using the tree --------------------
 
 func GetTagByXpath2(body string, xpath string, tree *Tree) (string, error) {
-	var err error
-	tree, err = EnsureTreeExists(body, tree)
+	xpathNodes, err := ParseXpath2(xpath)
 	if err != nil {
-		return "", fmt.Errorf("could not get root tag <html>")
+		panic(err)
+	}
+
+	fmt.Println(xpathNodes)
+
+	t, err := EnsureTreeExists(body, tree)
+	if err != nil {
+		return "", fmt.Errorf("could not get root tag <html>: %w", err)
+	}
+	if t == nil {
+		return "", fmt.Errorf("EnsureTreeExists returned nil tree")
+	}
+
+	if tree == nil {
+		tree = t
+	} else if t != tree {
+		*tree = *t
 	}
 
 	fmt.Println(tree)
+
+	child, err := AppendNextTag(body, tree)
+	if err != nil {
+		return "", fmt.Errorf("could not append next tag")
+	}
+
+	fmt.Println(child)
 
 	return "", nil
 }
@@ -339,7 +402,6 @@ func GetTagByXpath2(body string, xpath string, tree *Tree) (string, error) {
 func GetChildren2(body string, xpath string, tree *Tree) {
 	GetTagByXpath2(body, xpath, tree)
 }
-
 
 // -------------------- helper functions --------------------
 
@@ -350,4 +412,3 @@ func PrintLinesAboveAndBelow(body string, documentPosition int) {
 	fmt.Print(body[start:end])
 	fmt.Print("\n\nLines Below Ended\n\n")
 }
-
