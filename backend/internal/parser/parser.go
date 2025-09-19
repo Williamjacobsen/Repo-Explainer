@@ -485,3 +485,14 @@ func printTreeRecursive(tree *Tree, depth int) {
 		printTreeRecursive(child, depth+1)
 	}
 }
+
+/*
+Notable metion:
+<div>
+	<!-- '"` --><!-- </textarea></xmp> --></option>
+	</form>
+	<form>
+	</form>
+</div>
+The comment is an HTML injection defense trick
+*/
