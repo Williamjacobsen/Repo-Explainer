@@ -241,44 +241,47 @@ type Tree struct {
 // -------------------- config --------------------
 
 var voidTags = map[string]bool{
-    "area": true, "base": true, "br": true, "col": true, "embed": true,
-    "hr": true, "img": true, "input": true, "link": true, "meta": true,
-    "param": true, "source": true, "track": true, "wbr": true,
+	"area": true, "base": true, "br": true, "col": true, "embed": true,
+	"hr": true, "img": true, "input": true, "link": true, "meta": true,
+	"param": true, "source": true, "track": true, "wbr": true,
 }
 
 var rawTextTags = map[string]bool{
-    "script": true,
-    "style":  true,
+	"script": true,
+	"style":  true,
 }
 
 func ShouldBeNested(body string, tag string) bool {
-    if len(tag) == 0 { return false }
-    if tag[0] == '/' { tag = tag[1:] }
+	if len(tag) == 0 {
+		return false
+	}
+	if tag[0] == '/' {
+		tag = tag[1:]
+	}
 
-    if voidTags[tag] {
-        return false
-    }
+	if voidTags[tag] {
+		return false
+	}
 
-    if rawTextTags[tag] {
+	if rawTextTags[tag] {
 		SkipRawText(body, tag)
-        return false
-    }
+		return false
+	}
 
 	return true
 }
 
 func SkipRawText(body, tag string) {
-    close := "</" + tag + ">"
-    idx := strings.Index(strings.ToLower(body[DiscoveredPointer:]), close)
-    if idx >= 0 {
-        DiscoveredPointer += idx + len(close)
-    } else {
-        DiscoveredPointer = len(body)
-    }
+	close := "</" + tag + ">"
+	idx := strings.Index(strings.ToLower(body[DiscoveredPointer:]), close)
+	if idx >= 0 {
+		DiscoveredPointer += idx + len(close)
+	} else {
+		DiscoveredPointer = len(body)
+	}
 }
 
 var DiscoveredPointer int
-
 
 // -------------------- parsing helpers --------------------
 
@@ -292,11 +295,11 @@ func GetNewTag(body string, pos int) (Node, error) {
 
 			// HTML Comment
 			if i+4 <= len(body) && strings.HasPrefix(body[i:], "<!--") {
-                end := strings.Index(body[i+4:], "-->")
-                i = i + 4 + end + 3 - 1 // Land on '>'
-                DiscoveredPointer = i + 1
-                continue
-            }
+				end := strings.Index(body[i+4:], "-->")
+				i = i + 4 + end + 3 - 1 // Land on '>'
+				DiscoveredPointer = i + 1
+				continue
+			}
 
 			isTag = true
 		case '>':
@@ -349,7 +352,6 @@ func ParseXpath2(xpath string) ([]string, error) {
 	return xpathNodes, nil
 }
 
-
 // -------------------- tree construction --------------------
 
 func GetRoot(body string, tree *Tree) (*Tree, error) {
@@ -398,12 +400,12 @@ func AppendNextTag(body string, tree *Tree) (*Tree, error) {
 		return tree, fmt.Errorf("could not get next tag")
 	}
 
-if node.Tag[0] == '/' {
-        if tree.Parent != nil {
-            return tree.Parent, nil
-        }
-        return tree, nil
-    }
+	if node.Tag[0] == '/' {
+		if tree.Parent != nil {
+			return tree.Parent, nil
+		}
+		return tree, nil
+	}
 
 	child := &Tree{
 		Node: Node{
@@ -416,7 +418,7 @@ if node.Tag[0] == '/' {
 	}
 
 	tree.Children = append(tree.Children, child)
-	
+
 	if ShouldBeNested(body, node.Tag) {
 		return child, nil
 	}
@@ -426,9 +428,6 @@ if node.Tag[0] == '/' {
 // -------------------- API stubs using the tree --------------------
 
 func GetTagByXpath2(body string, xpath string, tree *Tree) (*Tree, error) {
-
-	PrintLinesAboveAndBelow(body, 200)
-
 	xpathNodes, err := ParseXpath2(xpath)
 	if err != nil {
 		panic(err)
