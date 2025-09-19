@@ -225,45 +225,90 @@ func GetCurrentTag(body string, documentPosition int) string {
 // -------------------- data types --------------------
 
 type Node struct {
-	Tag string
-	Pos int
+	Tag      string
+	StartPos int
+	EndPos   int
 }
 
 type Tree struct {
 	Node
 	Children []*Tree
 
-	Parent *Tree
+	Parent     *Tree
 	childIndex int
 }
 
 // -------------------- config --------------------
 
-var skipTags = map[string]bool{
-	"script": true,
-	"style":  true,
-	"meta":   true,
+var voidTags = map[string]bool{
+    "area": true, "base": true, "br": true, "col": true, "embed": true,
+    "hr": true, "img": true, "input": true, "link": true, "meta": true,
+    "param": true, "source": true, "track": true, "wbr": true,
 }
 
-func ShouldSkip(tag string) bool {
-	return skipTags[tag]
+var rawTextTags = map[string]bool{
+    "script": true,
+    "style":  true,
 }
+
+func ShouldBeNested(body string, tag string) bool {
+    if len(tag) == 0 { return false }
+    if tag[0] == '/' { tag = tag[1:] }
+
+    if voidTags[tag] {
+        return false
+    }
+
+    if rawTextTags[tag] {
+		SkipRawText(body, tag)
+        return false
+    }
+
+	return true
+}
+
+func SkipRawText(body, tag string) {
+    close := "</" + tag + ">"
+    idx := strings.Index(strings.ToLower(body[DiscoveredPointer:]), close)
+    if idx >= 0 {
+        DiscoveredPointer += idx + len(close)
+    } else {
+        DiscoveredPointer = len(body)
+    }
+}
+
+var DiscoveredPointer int
+
 
 // -------------------- parsing helpers --------------------
 
-func GetNextTag2(body string, pos int) (Node, error) {
+func GetNewTag(body string, pos int) (Node, error) {
 	tag := ""
 	isTag := false
 
-	for i := pos; i < len(body); i++ {
+	for i := DiscoveredPointer; i < len(body); i++ {
 		switch body[i] {
 		case '<':
+
+			// HTML Comment
+			if i+4 <= len(body) && strings.HasPrefix(body[i:], "<!--") {
+                end := strings.Index(body[i+4:], "-->")
+                i = i + 4 + end + 3 - 1 // Land on '>'
+                DiscoveredPointer = i + 1
+                continue
+            }
+
 			isTag = true
 		case '>':
 			tag = strings.TrimSpace(tag)
-			tag = strings.Split(tag, " ")[0]
+			if tag == "" {
+				return Node{}, fmt.Errorf("tag is empty")
+			}
+			tag = strings.ToLower(strings.Split(tag, " ")[0])
 			// TODO: also get attributes etc
-			return Node{Tag: tag, Pos: i + 1}, nil
+
+			DiscoveredPointer = i + 1
+			return Node{Tag: tag, StartPos: i + 1}, nil
 		default:
 			if isTag {
 				if body[i] == '\n' {
@@ -276,6 +321,15 @@ func GetNextTag2(body string, pos int) (Node, error) {
 	}
 
 	return Node{}, fmt.Errorf("could not find the next tag")
+}
+
+func GetNextTag2(body string, pos int) (Node, error) {
+	//if DiscoveredPointer <= pos {
+	//	return GetNewTag(body, pos)
+	//}
+	return GetNewTag(body, pos)
+
+	//return Node{}, fmt.Errorf("could not find the next tag")
 }
 
 func ParseXpath2(xpath string) ([]string, error) {
@@ -312,13 +366,13 @@ func GetRoot(body string, tree *Tree) (*Tree, error) {
 			break
 		}
 
-		pos = node.Pos
+		pos = node.StartPos
 	}
 
 	root := &Tree{
 		Node: Node{
-			Tag: node.Tag,
-			Pos: node.Pos,
+			Tag:      node.Tag,
+			StartPos: node.StartPos,
 		},
 		Children: []*Tree{},
 	}
@@ -339,29 +393,42 @@ func EnsureTreeExists(body string, tree *Tree) (*Tree, error) {
 }
 
 func AppendNextTag(body string, tree *Tree) (*Tree, error) {
-	node, err := GetNextTag2(body, tree.Node.Pos)
+	node, err := GetNextTag2(body, tree.Node.StartPos)
 	if err != nil {
 		return tree, fmt.Errorf("could not get next tag")
 	}
 
+if node.Tag[0] == '/' {
+        if tree.Parent != nil {
+            return tree.Parent, nil
+        }
+        return tree, nil
+    }
+
 	child := &Tree{
 		Node: Node{
-			Tag: node.Tag,
-			Pos: node.Pos,
+			Tag:      node.Tag,
+			StartPos: node.StartPos,
 		},
-		Children: []*Tree{},
-		Parent: tree,
+		Children:   []*Tree{},
+		Parent:     tree,
 		childIndex: len(tree.Children),
 	}
 
 	tree.Children = append(tree.Children, child)
-
-	return child, nil
+	
+	if ShouldBeNested(body, node.Tag) {
+		return child, nil
+	}
+	return tree, nil
 }
 
 // -------------------- API stubs using the tree --------------------
 
 func GetTagByXpath2(body string, xpath string, tree *Tree) (*Tree, error) {
+
+	PrintLinesAboveAndBelow(body, 200)
+
 	xpathNodes, err := ParseXpath2(xpath)
 	if err != nil {
 		panic(err)
@@ -380,11 +447,9 @@ func GetTagByXpath2(body string, xpath string, tree *Tree) (*Tree, error) {
 
 	child, _ := AppendNextTag(body, tree)
 
-	child, _ = AppendNextTag(body, child)
-
-	child, _ = AppendNextTag(body, child)
-
-	child, _ = AppendNextTag(body, child)
+	for i := 0; i < len(body); i++ {
+		child, _ = AppendNextTag(body, child)
+	}
 
 	return tree, nil
 }
@@ -415,7 +480,7 @@ func printTreeRecursive(tree *Tree, depth int) {
 		return
 	}
 	indent := strings.Repeat(" ", depth)
-	fmt.Printf("%s<%s pos=%d>\n", indent, tree.Node.Tag, tree.Node.Pos)
+	fmt.Printf("%s<%s pos=%d>\n", indent, tree.Node.Tag, tree.Node.StartPos)
 	for _, child := range tree.Children {
 		printTreeRecursive(child, depth+1)
 	}
