@@ -14,20 +14,13 @@ import (
 )
 
 const (
-	URL                  = "https://github.com/Williamjacobsen/ClosedAI/tree/main"
+	URL                  = "https://github.com/Williamjacobsen/Analyse-Github-Repositories/tree/main"
 	BRANCH               = "main"
 	LOGGING              = true
-	SAVE_RESULTS_TO_FILE = true
-	NUMBER_OF_WORKERS    = 10
+	NUMBER_OF_WORKERS    = 30
 )
 
 func GetGithubRepo() {
-
-	// Time taken:
-	// no worker pool (using recursive depth first search): takes ~16-18 seconds
-	// 1 worker: ~16-18 seconds
-	// 3 workers: ~6 seconds
-	// 10 workers: ~3-4 seconds
 	startNow := time.Now()
 	fileUrls := discoverAllDirectoriesConcurrently()
 	discoverAllFilesTime := time.Since(startNow)
@@ -58,7 +51,6 @@ func getHtml(url string) string {
 	return string(body)
 }
 
-// Assumes the JSON object starts with '{' / it is not an array
 func getJson(html string, startOfJson string) string {
 	startIndex := strings.Index(html, startOfJson)
 	endIndex := -1
@@ -103,9 +95,6 @@ func getDirectories(items gjson.Result, baseUrl string, rawFileUrl string) ([]st
 	return directoryUrls, fileUrls
 }
 
-// Returns:
-//   - Sub directory URLs found
-//   - File URLs found
 func getDirectoriesWrapper(url string, rawFileUrl string, baseUrl string) ([]string, []string) {
 	html := getHtml(url)
 
@@ -160,7 +149,7 @@ func discoverAllDirectoriesConcurrently() []string {
 	json := getJson(html, `{"props":{"initialPayload":`)
 	items := gjson.Get(json, "props.initialPayload.tree.items")
 
-	rootDirs, _ := getDirectories(items, URL, rawFileUrl)
+	rootDirs, rootFiles := getDirectories(items, URL, rawFileUrl)
 
 	toDiscoverCh := make(chan string, 500)
 	toDiscoverChResultFiles := make(chan []string, 500)
@@ -188,7 +177,7 @@ func discoverAllDirectoriesConcurrently() []string {
 		close(toDiscoverCh)
 	}()
 
-	fileUrls := []string{}
+	fileUrls := append([]string(nil), rootFiles...)
 	for results := range toDiscoverChResultFiles {
 		fileUrls = append(fileUrls, results...)
 	}
