@@ -14,15 +14,14 @@ import (
 )
 
 const (
-	URL                  = "https://github.com/Williamjacobsen/Analyse-Github-Repositories/tree/main"
 	BRANCH               = "main"
 	LOGGING              = true
 	NUMBER_OF_WORKERS    = 30
 )
 
-func GetGithubRepo() {
+func GetRepo(url string) []string {
 	startNow := time.Now()
-	fileUrls := discoverAllDirectoriesConcurrently()
+	fileUrls := discoverAllDirectoriesConcurrently(url)
 	discoverAllFilesTime := time.Since(startNow)
 
 	if LOGGING {
@@ -34,6 +33,8 @@ func GetGithubRepo() {
 	if LOGGING {
 		fmt.Println("\nTime taken to discover all files:", discoverAllFilesTime)
 	}
+
+	return fileUrls
 }
 
 func getHtml(url string) string {
@@ -135,21 +136,21 @@ func worker(
 	}
 }
 
-func discoverAllDirectoriesConcurrently() []string {
-	if !strings.HasSuffix(URL, "/tree/main") {
+func discoverAllDirectoriesConcurrently(url string) []string {
+	if !strings.HasSuffix(url, "/tree/main") {
 		log.Fatal("URL must end with /tree/main")
 	}
 
-	repo := strings.TrimPrefix(URL, "https://github.com/")
+	repo := strings.TrimPrefix(url, "https://github.com/")
 	repo = strings.TrimSuffix(repo, "/tree/main")
 
 	rawFileUrl := "https://raw.githubusercontent.com/" + repo + "/refs/heads/" + BRANCH
 
-	html := getHtml(URL)
+	html := getHtml(url)
 	json := getJson(html, `{"props":{"initialPayload":`)
 	items := gjson.Get(json, "props.initialPayload.tree.items")
 
-	rootDirs, rootFiles := getDirectories(items, URL, rawFileUrl)
+	rootDirs, rootFiles := getDirectories(items, url, rawFileUrl)
 
 	toDiscoverCh := make(chan string, 500)
 	toDiscoverChResultFiles := make(chan []string, 500)
@@ -159,7 +160,7 @@ func discoverAllDirectoriesConcurrently() []string {
 
 	workersWG.Add(NUMBER_OF_WORKERS)
 	for w := 1; w <= NUMBER_OF_WORKERS; w++ {
-		go worker(toDiscoverCh, toDiscoverChResultFiles, rawFileUrl, URL, &workWG, &workersWG)
+		go worker(toDiscoverCh, toDiscoverChResultFiles, rawFileUrl, url, &workWG, &workersWG)
 	}
 
 	go func() {
