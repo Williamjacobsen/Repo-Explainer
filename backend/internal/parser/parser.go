@@ -427,6 +427,49 @@ func AppendNextTag(body string, tree *Tree) (*Tree, error) {
 
 // -------------------- API stubs using the tree --------------------
 
+func ConstructTree(body string) (tree *Tree, err error) {
+	node, err := GetNextTag2(body, 0)
+	if err != nil {
+		panic("Couldn't get first tag")
+	}
+
+	tree = &Tree{
+		Node: Node{
+			Tag:      node.Tag,
+			StartPos: node.StartPos,
+		},
+	}
+
+	for i := node.StartPos; i < len(body); i = node.StartPos {
+		node, err = GetNextTag2(body, i)
+		if err != nil {
+			fmt.Println("Coundn't get next tag:", err)
+			break
+		}
+		fmt.Println(node)
+
+		// is it a closing tag?
+		// 		is the tag the same as the current tree node?
+		// 			move back to parent tree node
+		// 		else
+		// 			add it to the tree
+		// else
+		// 		add it to the tree and make it the current tree node
+
+		if node.Tag[0] == '/' {
+			
+
+			
+		} else {
+
+		}
+
+
+	}
+
+	return tree, nil
+}
+
 func GetTagByXpath2(body string, xpath string, tree *Tree) (*Tree, error) {
 	xpathNodes, err := ParseXpath2(xpath)
 	if err != nil {
@@ -454,7 +497,8 @@ func GetTagByXpath2(body string, xpath string, tree *Tree) (*Tree, error) {
 }
 
 func GetChildren2(body string, xpath string, tree *Tree) {
-	tree, _ = GetTagByXpath2(body, xpath, tree)
+	//tree, _ = GetTagByXpath2(body, xpath, tree)
+	tree, _ = ConstructTree(body)
 
 	PrintTree(tree)
 }
