@@ -243,7 +243,7 @@ type Tree struct {
 var voidTags = map[string]bool{
 	"area": true, "base": true, "br": true, "col": true, "embed": true,
 	"hr": true, "img": true, "input": true, "link": true, "meta": true,
-	"param": true, "source": true, "track": true, "wbr": true,
+	"param": true, "source": true, "track": true, "wbr": true, 
 }
 
 var rawTextTags = map[string]bool{
@@ -440,34 +440,60 @@ func ConstructTree(body string) (tree *Tree, err error) {
 		},
 	}
 
+	root := tree
+
 	for i := node.StartPos; i < len(body); i = node.StartPos {
 		node, err = GetNextTag2(body, i)
 		if err != nil {
 			fmt.Println("Coundn't get next tag:", err)
 			break
 		}
-		fmt.Println(node)
 
-		// is it a closing tag?
-		// 		is the tag the same as the current tree node?
-		// 			move back to parent tree node
-		// 		else
-		// 			add it to the tree
-		// else
-		// 		add it to the tree and make it the current tree node
-
-		if node.Tag[0] == '/' {
-			
-
-			
+		if node.Tag[0] == '/' { // is it a closing tag?
+			node.Tag = node.Tag[1:]
+			if node.Tag == tree.Node.Tag { // is the tag the same as the current tree node?
+				// move back to parent
+				fmt.Println("Moving back to parent:", tree.Parent.Node.Tag)
+				tree = tree.Parent 
+			} else {
+				// add it to the tree
+				fmt.Println("Adding node without moving:", node.Tag)
+				tree.Children = append(tree.Children, &Tree{
+					Node: Node{
+						Tag:      node.Tag,
+						StartPos: node.StartPos,
+					},
+					Parent: tree,
+				})
+			}
 		} else {
-
+			if ShouldBeNested(body, node.Tag) { // if the tag is a nestable tag unlike link, meta, etc.
+				// add it to the tree and make it the current tree node
+				fmt.Println("Adding and moving to child node:", node.Tag)
+				child := &Tree{
+					Node: Node{
+						Tag:      node.Tag,
+						StartPos: node.StartPos,
+					},
+					Parent: tree,
+				}
+				tree.Children = append(tree.Children, child)
+				tree = child
+			} else {
+				// add it to the tree
+				fmt.Println("Adding node without moving:", node.Tag)
+				tree.Children = append(tree.Children, &Tree{
+					Node: Node{
+						Tag:      node.Tag,
+						StartPos: node.StartPos,
+					},
+					Parent: tree,
+				})
+			}
 		}
-
-
 	}
 
-	return tree, nil
+	return root, nil
 }
 
 func GetTagByXpath2(body string, xpath string, tree *Tree) (*Tree, error) {
@@ -534,7 +560,7 @@ Notable metion:
 <div>
 	<!-- '"` --><!-- </textarea></xmp> --></option>
 	</form>
-	<form>
+	<form>fmt.Println("Moved back to parent:", tree.Node.Tag)
 	</form>
 </div>
 The comment is an HTML injection defense trick
