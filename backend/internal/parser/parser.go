@@ -428,19 +428,14 @@ func AppendNextTag(body string, tree *Tree) (*Tree, error) {
 // -------------------- API stubs using the tree --------------------
 
 func ConstructTree(body string) (tree *Tree, err error) {
-	node, err := GetNextTag2(body, 0)
+	tree, err = GetRoot(body, tree)
 	if err != nil {
 		panic("Couldn't get first tag")
 	}
 
-	tree = &Tree{
-		Node: Node{
-			Tag:      node.Tag,
-			StartPos: node.StartPos,
-		},
-	}
-
 	root := tree
+
+	node := tree.Node 
 
 	for i := node.StartPos; i < len(body); i = node.StartPos {
 		node, err = GetNextTag2(body, i)
@@ -449,10 +444,13 @@ func ConstructTree(body string) (tree *Tree, err error) {
 			break
 		}
 
-		if node.Tag[0] == '/' { // is it a closing tag?
+		if len(node.Tag) > 0 && node.Tag[0] == '/' { // is it a closing tag?
 			node.Tag = node.Tag[1:]
 			if node.Tag == tree.Node.Tag { // is the tag the same as the current tree node?
 				// move back to parent
+				if tree.Parent == nil {
+					break
+				}
 				fmt.Println("Moving back to parent:", tree.Parent.Node.Tag)
 				tree = tree.Parent 
 			} else {
