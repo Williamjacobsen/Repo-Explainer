@@ -15,7 +15,7 @@ import (
 	api "github.com/ollama/ollama/api"
 )
 
-func Llm(prompt string) {
+func Llm(prompt string) string {
 	ctx := context.Background()
 
 	// Create a client that talks to OLLAMA_HOST (or localhost:11434 by default).
@@ -45,4 +45,5 @@ func Llm(prompt string) {
 	}
 
 	fmt.Println(out.String())
+	return out.String()
 }
