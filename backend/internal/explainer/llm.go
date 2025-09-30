@@ -30,6 +30,9 @@ func Llm(prompt string) {
 		Messages: []api.Message{
 			{Role: "user", Content: prompt},
 		},
+		Options: map[string]interface{}{
+			"num_predict": 4096, // number of tokens to generate
+		},
 	}
 
 	// Stream response chunks into a buffer, then print.

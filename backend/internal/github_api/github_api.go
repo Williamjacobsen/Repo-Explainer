@@ -37,7 +37,7 @@ func GetRepo(url string) []string {
 	return fileUrls
 }
 
-func getHtml(url string) string {
+func GetHtml(url string) string {
 	resp, err := http.Get(url)
 	if err != nil {
 		log.Fatal(err)
@@ -97,7 +97,7 @@ func getDirectories(items gjson.Result, baseUrl string, rawFileUrl string) ([]st
 }
 
 func getDirectoriesWrapper(url string, rawFileUrl string, baseUrl string) ([]string, []string) {
-	html := getHtml(url)
+	html := GetHtml(url)
 
 	json := getJson(html, `{"payload":{`)
 
@@ -146,7 +146,7 @@ func discoverAllDirectoriesConcurrently(url string) []string {
 
 	rawFileUrl := "https://raw.githubusercontent.com/" + repo + "/refs/heads/" + BRANCH
 
-	html := getHtml(url)
+	html := GetHtml(url)
 	json := getJson(html, `{"props":{"initialPayload":`)
 	items := gjson.Get(json, "props.initialPayload.tree.items")
 
