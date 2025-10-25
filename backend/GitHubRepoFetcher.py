@@ -79,20 +79,20 @@ class GitHubRepoFetcher:
             shutil.rmtree(self.temp_dir)
             print(f"Cleaned up temporary directory: {self.temp_dir}")
 
-def main():
+def fetch_repo(repo_url: str):
     repo_url = "https://github.com/Williamjacobsen/AAU-Grouping-System.git"  
     
     fetcher = GitHubRepoFetcher()
     
-    try:
-        if fetcher.clone_repo(repo_url):
-            print("Scanning repository structure...\n")
-            files = fetcher.get_all_files()
+    #try:
+    if fetcher.clone_repo(repo_url):
+        print("Scanning repository structure...\n")
+        files = fetcher.get_all_files()
             
-    finally:
-        fetcher.cleanup()
+    #finally:
+    #    fetcher.cleanup()
 
     return files
 
 if __name__ == "__main__":
-    main()
+    fetch_repo("")
