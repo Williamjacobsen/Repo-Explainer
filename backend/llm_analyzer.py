@@ -199,22 +199,3 @@ Provide only the folder summary, no additional commentary."""
             
             for item in analysis.get('contents', []):
                 self.print_analysis(item, indent + 1)
-
-def analyse_repo(repo_path):
-    analyzer = LocalLLMAnalyzer(model="llama3.2")
-    
-    print("Starting repository analysis...\n")
-    print("=" * 60)
-    
-    analysis = analyzer.analyze_directory(Path(repo_path), Path(repo_path))
-    
-    print("\n" + "=" * 60)
-    print("ANALYSIS COMPLETE")
-    print("=" * 60 + "\n")
-    
-    analyzer.print_analysis(analysis)
-    
-    analyzer.save_analysis(analysis, "repo_analysis.json")
-
-if __name__ == "__main__":
-    analyse_repo("./temp_repo_057df994620947249c596e80048aff83")

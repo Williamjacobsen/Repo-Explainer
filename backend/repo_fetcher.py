@@ -25,6 +25,8 @@ class GitHubRepoFetcher:
             True if successful, False otherwise
         """
         try:
+            self.repo_url = repo_url
+
             if os.path.exists(self.temp_dir):
                 shutil.rmtree(self.temp_dir)
             
@@ -73,26 +75,18 @@ class GitHubRepoFetcher:
 
         return files
     
+    def get_repo_name(self) -> str:
+        """Extract repository name from the cloned directory or URL."""
+        if hasattr(self, 'repo_url'):
+            return self.repo_url.rstrip('/').split('/')[-1].replace('.git', '')
+        return Path(self.temp_dir).name
+
+    def get_temp_dir(self) -> str:
+        """Get the temporary directory path."""
+        return self.temp_dir
+    
     def cleanup(self):
         """Remove the temporary cloned repository."""
         if os.path.exists(self.temp_dir):
             shutil.rmtree(self.temp_dir)
             print(f"Cleaned up temporary directory: {self.temp_dir}")
-
-def fetch_repo(repo_url: str):
-    repo_url = "https://github.com/Williamjacobsen/AAU-Grouping-System.git"  
-    
-    fetcher = GitHubRepoFetcher()
-    
-    #try:
-    if fetcher.clone_repo(repo_url):
-        print("Scanning repository structure...\n")
-        files = fetcher.get_all_files()
-            
-    #finally:
-    #    fetcher.cleanup()
-
-    return files
-
-if __name__ == "__main__":
-    fetch_repo("")
