@@ -1,0 +1,672 @@
+{
+  "path": "root",
+  "type": "folder",
+  "explanation": "The \"root\" folder is likely intended as the root directory for the overall project, containing the backend and frontend codebases, with the backend serving as a Java Spring Boot project and the frontend being a React-based web application. The exact purpose of the root folder is unclear without further context, but it appears to serve as a top-level container for both codebases.",
+  "contents": [
+    {
+      "path": "LICENSE",
+      "type": "file",
+      "explanation": "This file is a MIT License that grants permission to use, modify, and distribute the software associated with it, free of charge, in exchange for including a copyright notice and permission statement in all copies or substantial portions of the software. The license disclaims any warranties and liabilities. It allows others to use the software without restriction, subject to the specified conditions."
+    },
+    {
+      "path": "README.md",
+      "type": "file",
+      "explanation": "This README.md file appears to be a placeholder or test file containing repeated instances of the string \"Test\" followed by a single \"Test!\" statement, indicating that it is likely an example or dummy file for documentation purposes. Its purpose is to serve as a basic template or placeholder until actual content can be added."
+    },
+    {
+      "path": "backend",
+      "type": "folder",
+      "explanation": "The \"backend\" folder serves as the root directory for a Java Spring Boot project with version control management and dependencies for web development, security, and testing. It contains the build.gradle script, Gradle-related scripts (gradle, gradlew, and gradlew.bat), settings.gradle file, and src folder where Java classes, resources, and configuration files are stored.",
+      "contents": [
+        {
+          "path": "backend/build.gradle",
+          "type": "file",
+          "explanation": "This Gradle build script configures a Java Spring Boot project with version control management and dependencies for web development, security, and testing. It sets up a Spring Boot project with a Maven repository, enables automatic restart on file changes during development, and specifies test frameworks for unit testing and integration testing. The script also defines the project's group ID, version, and language version for Java 24."
+        },
+        {
+          "path": "backend/gradle",
+          "type": "folder",
+          "explanation": "The \"backend/gradle\" folder serves as a self-contained repository for managing Gradle installations, including a Gradle wrapper that facilitates project builds and management.",
+          "contents": [
+            {
+              "path": "backend/gradle/wrapper",
+              "type": "folder",
+              "explanation": "The \"backend/gradle/wrapper\" folder contains a Gradle wrapper, which is a self-contained Java archive (JAR) file that includes all necessary classes to build and manage Gradle projects. It also stores configuration settings for downloading and storing the Gradle installation. The wrapper allows projects to run Gradle commands without requiring direct downloads or updates.",
+              "contents": [
+                {
+                  "path": "backend/gradle/wrapper/gradle-wrapper.jar",
+                  "type": "file",
+                  "explanation": "This is a Java class file listing for a Gradle wrapper, which is used to build and manage Gradle projects. The classes listed are part of the Gradle core library and are used in various stages of the build process.\n\nThe classes can be grouped into several categories:\n\n1. Command-line argument handling: `CommandLineArgumentException`, `CommandLineOption`, `CommandLineParser$BeforeFirstSubCommand`, `CommandLineParser$KnownOptionParserState`, `CommandLineParser$MissingOptionArgState`, `CommandLineParser$OptionAwareParserState`, and `CommandLineParser$UnknownOptionParserState`.\n2. Parsed command-line arguments: `ParsedCommandLine` and `ParsedCommandLineOption`.\n3. File handling: `PathAssembler`, `PropertiesFileHandler`, and `GradleUserHomeLookup`.\n4. Download and proxy authentication: `Download$, `ProxyAuthenticator`, and `Download$DefaultDownloadProgressListener`.\n5. Build execution: `GradleWrapperMain` and `Install$1`.\n6. Logging: `Logger`.\n\nThese classes work together to provide a flexible and efficient way to build and manage Gradle projects."
+                },
+                {
+                  "path": "backend/gradle/wrapper/gradle-wrapper.properties",
+                  "type": "file",
+                  "explanation": "This file configures the Gradle wrapper for a Java project, specifying the distribution URL and settings for downloading and storing the Gradle installation. The wrapper allows projects to run Gradle commands without requiring a direct download of the Gradle binary. It enables automated updating and validation of the downloaded Gradle version."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": "backend/gradlew",
+          "type": "file",
+          "explanation": "This script is a Gradle start-up script for POSIX systems, responsible for bootstrapping the JVM and executing the main class of the Gradle project. It determines the Java command to use based on the environment, sets default JVM options, collects arguments for the Java command, and finally executes the Java program with the provided command-line arguments."
+        },
+        {
+          "path": "backend/gradlew.bat",
+          "type": "file",
+          "explanation": "This file is a Windows batch script that automates the startup process for Gradle, a build automation tool, by setting up the environment and executing the Gradle command with default JVM options. It checks if Java is installed and sets the JAVA_HOME variable accordingly, before running the Gradle wrapper jar file to start building or compiling projects."
+        },
+        {
+          "path": "backend/settings.gradle",
+          "type": "file",
+          "explanation": "This Gradle settings file defines the root project's name as \"grouping-system\", likely for use in a multi-project build or a configuration that requires specifying the project's identity. The setting determines the name of the project as it will be used throughout the build process. This information is typically required by other Gradle settings files and plugins to function correctly."
+        },
+        {
+          "path": "backend/src",
+          "type": "folder",
+          "explanation": "The purpose of the \"backend/src\" folder is to serve as the root directory for the backend project's Java classes, resources, and configuration files that support various features in an academic grouping system's application.",
+          "contents": [
+            {
+              "path": "backend/src/main",
+              "type": "folder",
+              "explanation": "The purpose of the \"backend/src/main\" folder is to serve as the root directory for the backend project's Java classes, resources, and configuration files that support authentication, configuration, and group management in an academic grouping system's application.",
+              "contents": [
+                {
+                  "path": "backend/src/main/java",
+                  "type": "folder",
+                  "explanation": "The purpose of the \"backend/src/main/java/com/aau\" folder is to provide foundational Java classes for authentication, configuration, and group management in an academic grouping system's backend application.",
+                  "contents": [
+                    {
+                      "path": "backend/src/main/java/com",
+                      "type": "folder",
+                      "explanation": "The folder \"backend/src/main/java/com/aau\" is part of an academic grouping system's backend application, providing foundational Java functionality for authentication, configuration, and group management.",
+                      "contents": [
+                        {
+                          "path": "backend/src/main/java/com/aau",
+                          "type": "folder",
+                          "explanation": "The \"backend/src/main/java/com/aau/grouping_system\" folder provides the foundation for a backend application used in an academic grouping system, including various Java subfolders with functionalities such as authentication, configuration, and group management.",
+                          "contents": [
+                            {
+                              "path": "backend/src/main/java/com/aau/grouping_system",
+                              "type": "folder",
+                              "explanation": "The \"backend/src/main/java/com/aau/grouping_system\" folder contains various Java subfolders that provide the foundation for a backend application used in an academic grouping system. It includes authentication, configuration, data access, group management, project handling, session management, and user role-specific functionality, serving as the core of a larger Spring Boot-based application.",
+                              "contents": [
+                                {
+                                  "path": "backend/src/main/java/com/aau/grouping_system/Authentication",
+                                  "type": "folder",
+                                  "explanation": "The \"backend/src/main/java/com/aau/grouping_system/Authentication\" folder contains two classes: AuthController.java and AuthService.java, which are used to handle user authentication, manage user sessions, and ensure proper security and authorization for a grouping system using Spring Boot.",
+                                  "contents": [
+                                    {
+                                      "path": "backend/src/main/java/com/aau/grouping_system/Authentication/AuthController.java",
+                                      "type": "file",
+                                      "explanation": "This file defines an authentication controller that handles HTTP requests for signing in, signing out, and retrieving a user's information. It uses Spring Boot to handle incoming requests, interact with an `AuthService` instance, and manage user sessions using the Java Servlet API. The controller ensures proper security and authorization through Spring's Cross-Origin Resource Sharing (CORS) feature and HTTP status codes."
+                                    },
+                                    {
+                                      "path": "backend/src/main/java/com/aau/grouping_system/Authentication/AuthService.java",
+                                      "type": "file",
+                                      "explanation": "This AuthService class provides methods for authenticating users in a grouping system, including checking password correctness, finding users by email or ID, and managing HTTP sessions. It utilizes Spring Security's PasswordEncoder to verify passwords and interacts with a database to retrieve user data based on their role. The class also handles session management, creating new sessions and invalidating old ones as needed."
+                                    }
+                                  ]
+                                },
+                                {
+                                  "path": "backend/src/main/java/com/aau/grouping_system/Config",
+                                  "type": "folder",
+                                  "explanation": "The \"backend/src/main/java/com/aau/grouping_system/Config\" folder contains configuration classes for various backend settings, including CORS, Jackson serialization, and Spring Security configurations, enabling features such as relaxed JSON serialization and password encryption.",
+                                  "contents": [
+                                    {
+                                      "path": "backend/src/main/java/com/aau/grouping_system/Config/CorsConfig.java",
+                                      "type": "file",
+                                      "explanation": "This file defines a Spring configuration class that enables CORS (Cross-Origin Resource Sharing) for HTTP requests to be made from a local development server (localhost:3000) to a backend service. The configuration allows for credentials to be sent with requests, and it specifies which origins, headers, and methods are allowed. This allows developers to test and debug their frontend applications without being blocked by CORS restrictions."
+                                    },
+                                    {
+                                      "path": "backend/src/main/java/com/aau/grouping_system/Config/JacksonConfig.java",
+                                      "type": "file",
+                                      "explanation": "This JacksonConfig class configures Spring Boot's Jackson library to disable throwing errors when serializing empty beans and provides a custom configuration for better error handling and serialization of objects without public getters. It enables a more relaxed JSON serialization process, which can improve performance but may also lead to data loss in certain cases."
+                                    },
+                                    {
+                                      "path": "backend/src/main/java/com/aau/grouping_system/Config/SecurityConfig.java",
+                                      "type": "file",
+                                      "explanation": "This file defines a Spring Security configuration class that sets up basic security settings for a web application. It disables CSRF protection and allows all requests to be processed without authentication or authorization. The password encoder is also configured using the bcrypt algorithm."
+                                    }
+                                  ]
+                                },
+                                {
+                                  "path": "backend/src/main/java/com/aau/grouping_system/Database",
+                                  "type": "folder",
+                                  "explanation": "This folder provides the foundation for a data access layer in the application, including classes and interfaces to manage interactions with a database containing information about users, projects, groups, and other entities, utilizing advanced concurrency control and serialization techniques. The Database class serves as an interface to retrieve data from the database in various formats.",
+                                  "contents": [
+                                    {
+                                      "path": "backend/src/main/java/com/aau/grouping_system/Database/Database.java",
+                                      "type": "file",
+                                      "explanation": "This Java file defines a Spring component named `Database`, which serves as an interface to interact with a database containing information about users (coordinators, supervisors, students), projects, and groups. It provides methods to retrieve data from the database in various formats, such as maps of specific types of items, indicating its purpose as a data access layer for the application."
+                                    },
+                                    {
+                                      "path": "backend/src/main/java/com/aau/grouping_system/Database/DatabaseData.java",
+                                      "type": "file",
+                                      "explanation": "This Java class, DatabaseData, serves as a centralized container for saving and retrieving data from different entities in the system, including users, sessions, projects, groups, coordinators, supervisors, students, and maps of these entities. It provides methods to access individual maps and their respective collections, utilizing a unique integer ID to identify each map. The class uses various classes like ConcurrentHashMap and AtomicInteger for efficient data management and concurrency control."
+                                    },
+                                    {
+                                      "path": "backend/src/main/java/com/aau/grouping_system/Database/DatabaseItem.java",
+                                      "type": "file",
+                                      "explanation": "This Java class represents a database item that can be stored in one of several maps within a database, each map dedicated to a specific subclass of DatabaseItem. It provides methods for adding and removing items from these maps, as well as cascading removals of child items when its own item is removed from the database. The class is designed to be abstract, with subclasses specifying their own mapping databases through an abstract method."
+                                    },
+                                    {
+                                      "path": "backend/src/main/java/com/aau/grouping_system/Database/DatabaseItemChildGroup.java",
+                                      "type": "file",
+                                      "explanation": "This Java class represents a group of children that can be added to a database item, allowing for flexible and dynamic relationship establishment between database items. It provides methods for adding, removing, and retrieving child IDs, as well as getting the map ID associated with this group. The class also allows for retrieving related items based on the child IDs."
+                                    },
+                                    {
+                                      "path": "backend/src/main/java/com/aau/grouping_system/Database/DatabaseMap.java",
+                                      "type": "file",
+                                      "explanation": "This Java class, DatabaseMap, is a customizable map data structure that uses UUIDs as keys and allows for cascade deletion. It can be used to manage a collection of database items and provides methods to add, retrieve, and remove items from the map, while also handling cascading removal of related items. The class is designed to be thread-safe and serializable, making it suitable for use in a multithreaded environment."
+                                    },
+                                    {
+                                      "path": "backend/src/main/java/com/aau/grouping_system/Database/DatabaseSerializer.java",
+                                      "type": "file",
+                                      "explanation": "This Java class, DatabaseSerializer, is a component of a backend system that handles saving and loading data from a database to a file. It uses serialization to store and retrieve the data, providing methods for both saving and loading the database. The class also includes an initialization method that populates the database with example data if no save file exists."
+                                    }
+                                  ]
+                                },
+                                {
+                                  "path": "backend/src/main/java/com/aau/grouping_system/Group",
+                                  "type": "folder",
+                                  "explanation": "This \"backend/src/main/java/com/aau/grouping_system/Group\" folder contains Java classes that manage groups in an online grouping system, including data storage and retrieval from a database, thread-safe management of student IDs, and validation for join requests and group operations.",
+                                  "contents": [
+                                    {
+                                      "path": "backend/src/main/java/com/aau/grouping_system/Group/Group.java",
+                                      "type": "file",
+                                      "explanation": "This Java class represents a group in a grouping system, encapsulating its properties and behavior. It extends the DatabaseItem class to inherit database-related functionality and provides getters and setters for accessing and modifying group attributes such as supervisor ID, student IDs, project ID, and maximum students and requests. The class also uses CopyOnWriteArrayLists for thread-safe management of data."
+                                    },
+                                    {
+                                      "path": "backend/src/main/java/com/aau/grouping_system/Group/GroupController.java",
+                                      "type": "file",
+                                      "explanation": "This Java file is a controller class for managing groups in an online grouping system. It handles HTTP requests and responses related to group management, including accepting join requests, retrieving join requests, requesting to join a group, joining or leaving a group, and listing all available groups. The controller uses a database to store and retrieve data about groups and students."
+                                    },
+                                    {
+                                      "path": "backend/src/main/java/com/aau/grouping_system/Group/GroupService.java",
+                                      "type": "file",
+                                      "explanation": "This Java class provides a service for managing groups in an educational system, allowing students to join or request to join groups, accept join requests, and leaving groups. It interacts with a database to store and retrieve group data. The class throws exceptions to handle invalid operations such as trying to add a student who is already in the group or attempting to send more than the maximum number of requests to join a group."
+                                    }
+                                  ]
+                                },
+                                {
+                                  "path": "backend/src/main/java/com/aau/grouping_system/GroupingSystemApplication.java",
+                                  "type": "file",
+                                  "explanation": "This Java file serves as the entry point for a Spring Boot application, enabling the startup and execution of the grouping system application, likely managing student group assignments or similar organizational tasks. The @SpringBootApplication annotation configures the application to automatically scan and enable various Spring features. It executes the SpringApplication.run() method to launch the application."
+                                },
+                                {
+                                  "path": "backend/src/main/java/com/aau/grouping_system/Project",
+                                  "type": "folder",
+                                  "explanation": "This folder contains Java classes for a Project entity and a Spring-based REST controller for managing projects in a grouping system. It appears to be part of a larger backend application that handles business logic related to groupings and projects.",
+                                  "contents": [
+                                    {
+                                      "path": "backend/src/main/java/com/aau/grouping_system/Project/Project.java",
+                                      "type": "file",
+                                      "explanation": "This Java class represents a Project entity in the backend system, extending the DatabaseItem class to provide project-specific functionality. It has properties for project name and description, and provides constructors, getters, and setters to interact with these attributes. The class also overrides a method to return a map of projects based on the provided database instance."
+                                    },
+                                    {
+                                      "path": "backend/src/main/java/com/aau/grouping_system/Project/ProjectController.java",
+                                      "type": "file",
+                                      "explanation": "This file defines a Spring-based REST controller for managing projects within a grouping system. It provides a single endpoint to retrieve a list of projects associated with a specific session ID. The controller uses a database connection to fetch project data and returns it as a ResponseEntity."
+                                    }
+                                  ]
+                                },
+                                {
+                                  "path": "backend/src/main/java/com/aau/grouping_system/Session",
+                                  "type": "folder",
+                                  "explanation": "The \"backend/src/main/java/com/aau/grouping_system/Session\" folder contains Java classes that represent entities and services related to sessions in a grouping system, including session management, child group relationships, and database interactions. The folder is organized around a service layer (SessionService) that provides a standardized interface for managing sessions.",
+                                  "contents": [
+                                    {
+                                      "path": "backend/src/main/java/com/aau/grouping_system/Session/Session.java",
+                                      "type": "file",
+                                      "explanation": "This Java class represents a Session entity in a grouping system database. It extends the base DatabaseItem class and includes child groups for supervisors, students, projects, and groups, as well as attributes for a coordinator ID and session name. The class provides getter and setter methods for these attributes and overrides the getDatabaseMap method to retrieve sessions from the database."
+                                    },
+                                    {
+                                      "path": "backend/src/main/java/com/aau/grouping_system/Session/SessionController.java",
+                                      "type": "file",
+                                      "explanation": "This Java file defines a RESTful API controller for managing sessions in a grouping system. It provides endpoints for creating, retrieving, deleting, and opening sessions, with authorization checks to ensure that only authorized coordinators can access and modify sessions. The controller uses a session service to interact with the underlying data storage and business logic."
+                                    },
+                                    {
+                                      "path": "backend/src/main/java/com/aau/grouping_system/Session/SessionFactory.java",
+                                      "type": "file",
+                                      "explanation": "This Java file defines a session factory class named `SessionFactory`, which creates instances of the `Session` class based on input parameters from a database connection, child group references, a coordinator, and a unique session name. The purpose of this factory is to provide a centralized method for creating sessions in the system, ensuring consistency and standardization."
+                                    },
+                                    {
+                                      "path": "backend/src/main/java/com/aau/grouping_system/Session/SessionService.java",
+                                      "type": "file",
+                                      "explanation": "This Java class, SessionService, serves as a service layer for managing sessions in a grouping system. It provides methods to create, retrieve, and delete sessions, as well as check permissions and authorization for coordinators. The service interacts with a database, specifically the Database class, to perform these operations."
+                                    }
+                                  ]
+                                },
+                                {
+                                  "path": "backend/src/main/java/com/aau/grouping_system/StudentQuestionnaire",
+                                  "type": "folder",
+                                  "explanation": "This folder contains Java classes related to student questionnaires, including the StudentQuestionnaire class that stores questionnaire data and a factory class StudentQuestionnaireFactory that creates instances of this class. The purpose of this folder is to provide a structured way to collect and store student preferences and requirements for group projects in a thread-safe manner.",
+                                  "contents": [
+                                    {
+                                      "path": "backend/src/main/java/com/aau/grouping_system/StudentQuestionnaire/StudentQuestionnaire.java",
+                                      "type": "file",
+                                      "explanation": "This Java class represents a student questionnaire, storing information about a student's preferences and requirements for group projects, including personal skills, academic interests, and special needs. It provides a structured way to collect and store this data, allowing for easy retrieval and modification through getter and setter methods. The use of CopyOnWriteArrayLists ensures thread-safe access to the data."
+                                    },
+                                    {
+                                      "path": "backend/src/main/java/com/aau/grouping_system/StudentQuestionnaire/StudentQuestionnaireFactory.java",
+                                      "type": "file",
+                                      "explanation": "This file defines a factory class named StudentQuestionnaireFactory, which creates instances of the StudentQuestionnaire class by taking in various parameters and populating them into the questionnaire object. The purpose of this factory class is to encapsulate the creation process for a StudentQuestionnaire object and provide a simple and uniform way to create these objects."
+                                    }
+                                  ]
+                                },
+                                {
+                                  "path": "backend/src/main/java/com/aau/grouping_system/User",
+                                  "type": "folder",
+                                  "explanation": "The \"backend/src/main/java/com/aau/grouping_system/User\" folder contains classes that represent various roles in an academic grouping system application, including a base User class and specialized classes for coordinators, supervisors, and students, each with their own specific functionality and database interactions.",
+                                  "contents": [
+                                    {
+                                      "path": "backend/src/main/java/com/aau/grouping_system/User/Coordinator",
+                                      "type": "folder",
+                                      "explanation": "This Java folder (backend/src/main/java/com/aau/grouping_system/User/Coordinator) contains classes that manage coordinators in a grouping system, including database interactions, business logic, and RESTful API controllers for coordinator-specific user management operations.",
+                                      "contents": [
+                                        {
+                                          "path": "backend/src/main/java/com/aau/grouping_system/User/Coordinator/Coordinator.java",
+                                          "type": "file",
+                                          "explanation": "This Java class represents a Coordinator in the grouping system, extending the User class and providing methods for database interactions specific to coordinators, such as retrieving their role and sessions. It also includes an instance variable to store child groups of sessions associated with the coordinator. The constructor initializes a new coordinator object with a database connection and session details."
+                                        },
+                                        {
+                                          "path": "backend/src/main/java/com/aau/grouping_system/User/Coordinator/CoordinatorController.java",
+                                          "type": "file",
+                                          "explanation": "This Java file defines a controller class for coordinating user management operations, specifically handling sign-up, email modifications, and password changes for coordinators in a grouping system. The controller interacts with a CoordinatorService class to perform business logic and returns responses based on the outcome of these operations. It is designed as a RESTful API using Spring Web framework."
+                                        },
+                                        {
+                                          "path": "backend/src/main/java/com/aau/grouping_system/User/Coordinator/CoordinatorService.java",
+                                          "type": "file",
+                                          "explanation": "This file defines a CoordinatorService class that provides methods for managing coordinators in a system, including adding new coordinators, modifying existing coordinator information, and checking for duplicate email addresses. The service uses a database to store and retrieve data, and utilizes a password encoder to securely hash and verify passwords. It is designed as a Spring Service, suggesting it is part of a larger web application using the Spring Framework."
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "path": "backend/src/main/java/com/aau/grouping_system/User/Student",
+                                      "type": "folder",
+                                      "explanation": "The \"backend/src/main/java/com/aau/grouping_system/User/Student\" folder contains two Java classes: Student.java and StudentController.java, which define a `Student` class representing a user with student role in an academic grouping system and a RESTful API endpoint for retrieving student data within specific sessions, respectively.",
+                                      "contents": [
+                                        {
+                                          "path": "backend/src/main/java/com/aau/grouping_system/User/Student/Student.java",
+                                          "type": "file",
+                                          "explanation": "This Java file defines a `Student` class that extends the `User` class, representing a user with student role in an academic grouping system. It provides constructors for initializing a new student and overrides abstract methods to return specific data related to students. The class also includes a session ID attribute to track the student's current session status."
+                                        },
+                                        {
+                                          "path": "backend/src/main/java/com/aau/grouping_system/User/Student/StudentController.java",
+                                          "type": "file",
+                                          "explanation": "This Java class, StudentController, is a RESTful API endpoint for retrieving student data within specific sessions in a grouping system application. It interacts with the Database to fetch session information and retrieve students assigned to those sessions. The class handles GET requests to retrieve a list of students within a given session ID."
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "path": "backend/src/main/java/com/aau/grouping_system/User/Supervisor",
+                                      "type": "folder",
+                                      "explanation": "The \"backend/src/main/java/com/aau/grouping_system/User/Supervisor\" folder contains the Supervisor class and its associated code, representing a specific role in a grouping system application with unique functionality for supervisors to interact with the database and access their role.",
+                                      "contents": [
+                                        {
+                                          "path": "backend/src/main/java/com/aau/grouping_system/User/Supervisor/Supervisor.java",
+                                          "type": "file",
+                                          "explanation": "This Java file represents a Supervisor class in a grouping system application, extending the User class and providing functionality for supervisors to interact with the database and access their specific role. The Supervisor class has an additional sessionId field to store the supervisor's session ID and overrides two abstract methods from the User class to provide supervisor-specific behavior."
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "path": "backend/src/main/java/com/aau/grouping_system/User/User.java",
+                                      "type": "file",
+                                      "explanation": "This Java class represents an abstract user entity in a grouping system application, encapsulating email, password hash, and name fields. It extends the DatabaseItem class and provides methods to define a user's role, which is represented by an enum called Role. The class includes constructors, getters, and setters for its fields, allowing it to be used as a base class for specific user types (e.g., Coordinator, Supervisor, Student)."
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "path": "backend/src/main/resources",
+                  "type": "folder",
+                  "explanation": "The \"backend/src/main/resources\" folder contains configuration files used by the Spring framework, including the \"application.properties\" file that defines metadata for the application. This folder serves as a source of resource files for the Spring application to access its properties and settings.",
+                  "contents": [
+                    {
+                      "path": "backend/src/main/resources/application.properties",
+                      "type": "file",
+                      "explanation": "This file defines the name of the Spring application, which is \"grouping-system\". It serves as a configuration property for the Spring framework to identify the application and its context. The value of this property can be used in various places within the application to provide metadata about the application."
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "path": "backend/src/test",
+              "type": "folder",
+              "explanation": "The \"backend/src/test\" folder contains test cases for the backend API of a Spring Boot application. It primarily focuses on testing the internal logic and functionality of the backend.",
+              "contents": [
+                {
+                  "path": "backend/src/test/java",
+                  "type": "folder",
+                  "explanation": "The \"backend/src/test/java\" folder contains unit test sources (test classes) for the backend API of a Spring Boot application, focusing on its internal logic and functionality.",
+                  "contents": [
+                    {
+                      "path": "backend/src/test/java/com",
+                      "type": "folder",
+                      "explanation": "This folder contains unit test sources (test classes) for the backend API of a Spring Boot application. The tests focus on the internal logic and functionality of the API, likely including method implementations, utilities, and other core components.",
+                      "contents": [
+                        {
+                          "path": "backend/src/test/java/com/aau",
+                          "type": "folder",
+                          "explanation": "This folder contains integration tests for the \"GroupingSystem\" Spring Boot application, focusing on its database functionality, data storage and retrieval, and deletion behavior.",
+                          "contents": [
+                            {
+                              "path": "backend/src/test/java/com/aau/grouping_system",
+                              "type": "folder",
+                              "explanation": "This folder is used to store integration tests for the \"GroupingSystem\" Spring Boot application, including testing of its database functionality, data storage and retrieval, and deletion behavior.",
+                              "contents": [
+                                {
+                                  "path": "backend/src/test/java/com/aau/grouping_system/GroupingSystemApplicationTests.java",
+                                  "type": "file",
+                                  "explanation": "This Java test class is used to verify the functionality of the Spring Boot application \"GroupingSystem\" during its development or integration testing phase, ensuring that the application loads correctly and functions as expected. The test case \"contextLoads()\" checks if the application's context has been properly loaded, which serves as a basic validation step for the application."
+                                },
+                                {
+                                  "path": "backend/src/test/java/com/aau/grouping_system/integrationTests",
+                                  "type": "folder",
+                                  "explanation": "This folder contains Java test classes designed to integrate and test a database system for a grouping system application, focusing on verifying its functionality, storing and retrieving data, and checking deletion behavior.",
+                                  "contents": [
+                                    {
+                                      "path": "backend/src/test/java/com/aau/grouping_system/integrationTests/DatabaseTest.java",
+                                      "type": "file",
+                                      "explanation": "This Java test class is designed to integrate and test a database system for a grouping system application. It fills the database with initial data (coordinators, sessions, and students) and then tests its functionality by verifying that it correctly stores and retrieves this data. The tests also check that deleting items from the database deletes their child items recursively."
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "frontend",
+      "type": "folder",
+      "explanation": "The \"frontend\" folder is the main entry point for a React-based web application, containing essential files such as global styling, routing configuration, reusable hooks, and pages that manage page functionality and data fetching. It also includes necessary assets like index.html, manifest.json, and robots.txt for development, deployment, and Progressive Web App configuration. The \"frontend\" folder serves as the root directory for the frontend codebase.",
+      "contents": [
+        {
+          "path": "frontend/README.md",
+          "type": "file",
+          "explanation": "This file serves as a documentation for a Create React App project, providing instructions and information on how to get started, run scripts, build and deploy the application, and access additional resources for learning more about React and Create React App. It also provides troubleshooting guides for common issues, such as minification errors during the build process."
+        },
+        {
+          "path": "frontend/package-lock.json",
+          "type": "file",
+          "explanation": "This is a list of dependencies for a Node.js project, specifically those required by the `@babel` package. The list includes various versions and resolutions of packages such as `@babel/parser`, `@babel/traverse`, `@babel/template`, and others. Each entry represents a dependency with its version number and any additional metadata such as license information or dependencies itself.\n\nThe dependencies are grouped into several categories, including:\n\n* Helper functions (`@babel/helpers`)\n* Parser (`@babel/parser`)\n* Traverser (`@babel/traverse`)\n* Template engine (`@babel/template`)\n* Plugin bug fixes (`@babel/plugin-bugfix-*`)\n\nEach dependency has its own version number and resolution, indicating the specific version of the package that is being used in this project. This information can be useful for managing dependencies, tracking updates, or debugging issues related to `@babel`."
+        },
+        {
+          "path": "frontend/package.json",
+          "type": "file",
+          "explanation": "This file is a package.json configuration for a React application, specifying its dependencies, scripts, and configurations for development and testing. It defines the project's structure and setup requirements, including versions of libraries such as React, React Router, and Jest, as well as tools like eslintConfig and browserslist."
+        },
+        {
+          "path": "frontend/public",
+          "type": "folder",
+          "explanation": "The \"frontend/public\" folder serves as the entry point for a React-based web application, hosting essential assets such as index.html, manifest.json, and robots.txt, which are used during development, deployment, and Progressive Web App configuration. This folder is intended to be accessible by both users and search engine crawlers, with no restrictions specified in its contents.",
+          "contents": [
+            {
+              "path": "frontend/public/index.html",
+              "type": "file",
+              "explanation": "This file serves as the entry point for a React application, providing basic HTML structure and metadata necessary for rendering and serving the app in a web browser. It uses create-react-app's configuration to reference assets stored in the public folder during the build process, and includes a template for adding customizations or scripts. The file is designed to be used as a starting point for development and deployment of a React-based web application."
+            },
+            {
+              "path": "frontend/public/manifest.json",
+              "type": "file",
+              "explanation": "This file defines the metadata and configuration for a Progressive Web App (PWA), specifying its name, icons, display mode, color scheme, and start URL, allowing it to be installed as a standalone app on mobile devices or desktop browsers."
+            },
+            {
+              "path": "frontend/public/robots.txt",
+              "type": "file",
+              "explanation": "This robots.txt file specifies that all user-agents (bots) are allowed to crawl the website, with no specific disallowed URLs or directories specified. This indicates that the website does not have any restrictions on crawling and indexing. The file serves as a simple disclaimer stating that it's an empty file, following best practices for robots.txt files."
+            }
+          ]
+        },
+        {
+          "path": "frontend/src",
+          "type": "folder",
+          "explanation": "The \"frontend/src\" folder serves as the main entry point for a React application's frontend, containing essential files such as global styling (index.css), routing configuration (index.jsx), and reusable hooks (utils) that manage page functionality and data fetching. It also includes various pages and reports related to web vitals performance and testing library setup.",
+          "contents": [
+            {
+              "path": "frontend/src/index.css",
+              "type": "file",
+              "explanation": "This CSS file sets the global styling for a web application's frontend, defining fonts, font smoothing, colors, and background color to provide a consistent visual layout. It also specifies a custom font family for code elements. This file likely serves as the main stylesheet for the application's UI components."
+            },
+            {
+              "path": "frontend/src/index.jsx",
+              "type": "file",
+              "explanation": "This file is the main entry point of a React application and sets up the routing configuration for the app using React Router. It defines the layout and structure of the app's pages and renders the DefaultHeader component as the default route. The Routes component handles client-side routing and renders different components based on the matched path."
+            },
+            {
+              "path": "frontend/src/pages",
+              "type": "folder",
+              "explanation": "The \"frontend/src/pages\" folder contains various React components and folders for managing different types of pages in a web application, including About, Header, Projects, Sessions, Status, User, and NoPage, each providing specific functionality and user experiences. These pages are likely to be part of a larger web application with features like authentication, project management, session tracking, and student data display.",
+              "contents": [
+                {
+                  "path": "frontend/src/pages/About",
+                  "type": "folder",
+                  "explanation": "The \"frontend/src/pages/About\" folder contains a React component that represents an \"About\" page for a website, providing information about its purpose, features, and contact details for various user groups.",
+                  "contents": [
+                    {
+                      "path": "frontend/src/pages/About/About.jsx",
+                      "type": "file",
+                      "explanation": "This file is a React component that represents an \"About\" page for a website. It provides information about the website's purpose and functionality, including its features, usage tutorials, and contact details. The content is structured to cater to different user groups (semester coordinators, supervisors, and students)."
+                    }
+                  ]
+                },
+                {
+                  "path": "frontend/src/pages/Header",
+                  "type": "folder",
+                  "explanation": "The \"frontend/src/pages/Header\" folder contains React components for a navigation bar with dynamic content rendering, including styles to create a consistent user interface element. It consists of two main components: `DefaultHeader.jsx` and `SessionHeader.jsx`, which handle different scenarios (e.g., regular pages vs. session pages).",
+                  "contents": [
+                    {
+                      "path": "frontend/src/pages/Header/DefaultHeader.jsx",
+                      "type": "file",
+                      "explanation": "This file defines a React functional component named `Header` that serves as a navigation bar for a web application. It uses React Router to render links to different routes (About, Profile, and Sessions) within a sticky header section. The `<Outlet />` component is used to render the main content of the page below the header."
+                    },
+                    {
+                      "path": "frontend/src/pages/Header/Header.css",
+                      "type": "file",
+                      "explanation": "This CSS file defines styles for a header component in a web application, including positioning, layout, and visual effects such as shadow, border, and hover states, to create a consistent and visually appealing user interface element. The styles aim to position the header at the top of the page, center its content horizontally, and provide a clean and modern design. The file targets specific HTML elements within the header component to apply these styles."
+                    },
+                    {
+                      "path": "frontend/src/pages/Header/SessionHeader.jsx",
+                      "type": "file",
+                      "explanation": "This file is a React functional component that serves as the header section for a session page, displaying navigation links to status and projects within the current session, along with the session name, while also serving as a container for dynamic content via the Outlet component from react-router-dom. The component fetches the session data using a custom hook called useGetSession and displays a loading message if the data is still being loaded."
+                    }
+                  ]
+                },
+                {
+                  "path": "frontend/src/pages/NoPage",
+                  "type": "folder",
+                  "explanation": "The \"frontend/src/pages/NoPage\" folder contains a React component that displays an error message for non-existent routes in a routing system.",
+                  "contents": [
+                    {
+                      "path": "frontend/src/pages/NoPage/NoPage.jsx",
+                      "type": "file",
+                      "explanation": "This file defines a React component named `NoPage` that displays a message indicating that the currently accessed URL does not have an associated page. The component is likely used in a routing system to provide a default or error message when a user attempts to access a non-existent route. It renders a simple HTML element with a heading to display this message."
+                    }
+                  ]
+                },
+                {
+                  "path": "frontend/src/pages/Projects",
+                  "type": "folder",
+                  "explanation": "The \"frontend/src/pages/Projects\" folder contains reusable React components and a custom hook for displaying project information in a tabular format, including a table component, a hook to fetch project data from a backend API, and a main component that displays a list of projects based on the session ID. This setup enables efficient rendering and data fetching for project pages.",
+                  "contents": [
+                    {
+                      "path": "frontend/src/pages/Projects/Projects.jsx",
+                      "type": "file",
+                      "explanation": "This file is a React functional component that displays a list of projects retrieved from a backend database based on the session ID passed in the URL. The component uses React hooks to manage state and fetch data from an API. It renders a table displaying the project information once the data is loaded."
+                    },
+                    {
+                      "path": "frontend/src/pages/Projects/ProjectsTable.jsx",
+                      "type": "file",
+                      "explanation": "This file is a React functional component that renders a table with project data, utilizing memoization to optimize performance by caching the component's props. The component expects a `projects` prop to be passed from its parent, and it currently displays a placeholder message indicating where the table content should be rendered. It provides a reusable UI element for displaying project information in a tabular format."
+                    },
+                    {
+                      "path": "frontend/src/pages/Projects/useGetSessionProjects.jsx",
+                      "type": "file",
+                      "explanation": "This file defines a custom React hook `useGetSessionProjects` that fetches project data from a backend API based on a provided session ID. The hook returns an object with two properties: `isLoading`, indicating whether the data is being loaded, and `projects`, containing an array of retrieved projects."
+                    }
+                  ]
+                },
+                {
+                  "path": "frontend/src/pages/Sessions",
+                  "type": "folder",
+                  "explanation": "The \"frontend/src/pages/Sessions\" folder contains three files related to managing sessions in a web application: a CSS file for styling, a React component for displaying and interacting with session data, and a custom hook for managing sessions through an API endpoint. This folder appears to be part of a larger application focused on user sessions and authentication management.",
+                  "contents": [
+                    {
+                      "path": "frontend/src/pages/Sessions/Sessions.css",
+                      "type": "file",
+                      "explanation": "This CSS file defines styles for a sessions page in a web application, including layout, typography, forms, and grid-based card components. It includes responsive design adjustments for smaller screen sizes to adapt the layout and styling accordingly. The file provides a basic visual structure for displaying and interacting with session data."
+                    },
+                    {
+                      "path": "frontend/src/pages/Sessions/Sessions.jsx",
+                      "type": "file",
+                      "explanation": "This file is a React functional component named \"Sessions\" that allows users to manage their sessions. It provides functionality for creating new sessions, editing existing session setups, and deleting sessions, along with displaying a list of existing sessions and their corresponding actions. The component utilizes various hooks to access authentication and session data from related useAuth and useSessionManager contexts."
+                    },
+                    {
+                      "path": "frontend/src/pages/Sessions/useSessionManager.jsx",
+                      "type": "file",
+                      "explanation": "This file provides a custom React hook called `useSessionManager`, which manages sessions by fetching, creating, and deleting sessions from an API endpoint at `http://localhost:8080/sessions`. The hook returns an object with functions to interact with sessions and their states, allowing components to access session data without making multiple API calls. It also handles errors and loading states for a more seamless user experience."
+                    }
+                  ]
+                },
+                {
+                  "path": "frontend/src/pages/Status",
+                  "type": "folder",
+                  "explanation": "The \"frontend/src/pages/Status\" folder contains React components and hooks for displaying student data, filtering, and sorting, providing an efficient and dynamic user experience. The folder includes several key components: StudentTable, useStudentFiltering, useStudentSorting, and Status. These components work together to display student information, filter the data based on user input, and sort the data dynamically.",
+                  "contents": [
+                    {
+                      "path": "frontend/src/pages/Status/Status.jsx",
+                      "type": "file",
+                      "explanation": "This file is a React component that displays student data for a specific session ID, allowing users to filter and sort the data using dropdown menus and search input fields. The component utilizes various custom hooks to fetch and manage the data, ensuring efficient and dynamic rendering of the student table. It also handles authentication and loading states, providing a seamless user experience."
+                    },
+                    {
+                      "path": "frontend/src/pages/Status/StudentTable.jsx",
+                      "type": "file",
+                      "explanation": "This file defines a React component named `StudentTable` that displays a table of student information based on an input array of students. The table columns are dynamically generated and populated with data from the students array, using memoization to optimize performance. It provides an empty list message if the input students array is empty."
+                    },
+                    {
+                      "path": "frontend/src/pages/Status/StudentTable.test.jsx",
+                      "type": "file",
+                      "explanation": "This test file verifies the functionality of the StudentTable component by rendering it with a mock list of students and checking that the table content is rendered correctly, including student names, group numbers, and project names, using Jest and React Testing Library. The test ensures that the expected data is displayed in the correct format. It validates the rendering of individual rows within the table based on the provided mock data."
+                    },
+                    {
+                      "path": "frontend/src/pages/Status/useStudentFiltering.jsx",
+                      "type": "file",
+                      "explanation": "This file provides a custom React hook named `useStudentFiltering` that enables filtering of an array of students based on user input. The hook returns two components: `toFiltered`, which takes an array of students and returns a filtered clone, and `SearchFilterInput`, which is an input field for users to enter their search query. The hook uses the `useState` and `useCallback` hooks to manage state and memoize functions."
+                    },
+                    {
+                      "path": "frontend/src/pages/Status/useStudentFiltering.test.jsx",
+                      "type": "file",
+                      "explanation": "This test file verifies the functionality of the `useStudentFiltering` hook in a React application. It checks that entering a search term updates the filtering function correctly, reducing the list of students to only those with matching names or group information. The test ensures the hook's behavior is as expected when the filter input field is changed."
+                    },
+                    {
+                      "path": "frontend/src/pages/Status/useStudentSorting.jsx",
+                      "type": "file",
+                      "explanation": "This file provides a custom React hook named `useStudentSorting` that allows for dynamic sorting of student data based on their group or name in ascending or descending order. The hook returns an object with two properties: `toSorted`, which takes an array of students as input and returns a sorted clone, and `SortingDropdown`, a component that renders a dropdown menu to select the sorting mode."
+                    }
+                  ]
+                },
+                {
+                  "path": "frontend/src/pages/User",
+                  "type": "folder",
+                  "explanation": "The \"frontend/src/pages/User\" folder contains React components and supporting files for user management pages, including profile editing, sign-in, sign-up functionality, and authentication-related utilities. These components utilize state management, memoization, and API integrations to manage user data and authenticate interactions with the backend server.",
+                  "contents": [
+                    {
+                      "path": "frontend/src/pages/User/Profile.jsx",
+                      "type": "file",
+                      "explanation": "This file is a ReactJS component that renders a user's profile page, allowing users to update their email and password. It uses React Hooks for state management and fetch API to send requests to a backend server for authentication-related operations. The component displays the user's information and provides buttons to modify these details or log out."
+                    },
+                    {
+                      "path": "frontend/src/pages/User/SignIn.jsx",
+                      "type": "file",
+                      "explanation": "This React functional component, SignIn, allows users to sign in with various roles and credentials (email or ID) by providing a form with dropdown options for selecting the role and input fields for entering either email or ID and password. The component utilizes state management and memoization to optimize performance. It also integrates authentication functionality through the useAuth hook and navigates between routes as needed."
+                    },
+                    {
+                      "path": "frontend/src/pages/User/SignUp.jsx",
+                      "type": "file",
+                      "explanation": "This file is a React functional component for user sign-up functionality, where users can input their name, email, and password to create an account. The form data is validated and sent to the `handleSignUp` function using the `useAuth` hook, which handles authentication-related logic. The component also displays any error messages that occur during the sign-up process."
+                    },
+                    {
+                      "path": "frontend/src/pages/User/User.css",
+                      "type": "file",
+                      "explanation": "This CSS file styles a user login page, defining various elements such as containers, headers, input fields, labels, and error/success messages, with a focus on layout, typography, colors, and visual effects to create a visually appealing interface for user authentication. The styles are primarily used to enhance the presentation of the user interface components in the User component."
+                    },
+                    {
+                      "path": "frontend/src/pages/User/useAuth.jsx",
+                      "type": "file",
+                      "explanation": "This file provides a custom authentication hook for React applications, allowing users to check their status, sign in, and sign up. It handles user data fetching, error handling, and navigation between routes, ensuring seamless authentication flow with backend APIs. The hook also includes utility functions for signing in and signing up, wrapping the API calls in error handling and navigation logic."
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "path": "frontend/src/reportWebVitals.js",
+              "type": "file",
+              "explanation": "This file is a React hook that reports web vital metrics to the Web Vitals API when the `onPerfEntry` callback function is triggered, providing detailed performance data about the client-side application's loading and rendering times. It imports and calls various Web Vitals functions to collect metrics such as CLS (Cumulative Layout Shift), FID (First Input Delay), FCP (First Contentful Paint), LCP (Layout Change Paint), and TTFB (Time To First byte)."
+            },
+            {
+              "path": "frontend/src/setupTests.js",
+              "type": "file",
+              "explanation": "This file is a Jest configuration setup for testing library support, specifically enabling Jest DOM to provide custom matchers for asserting on DOM nodes in tests. It imports the Jest DOM module, which allows for more expressive and flexible assertions when working with HTML elements in test suites. This setup enables features like `toHaveTextContent` and other utilities provided by testing-library/jest-dom."
+            },
+            {
+              "path": "frontend/src/utils",
+              "type": "folder",
+              "explanation": "The \"frontend/src/utils\" folder contains reusable custom React hooks (`useGetSession` and `useGetSessionStudents`) for fetching and managing session-related data from an API endpoint, handling loading state, errors, and updating component states accordingly. The folder also includes unit tests for the `useGetSessionStudents` hook to ensure its correctness.",
+              "contents": [
+                {
+                  "path": "frontend/src/utils/useGetSession.jsx",
+                  "type": "file",
+                  "explanation": "This file defines a custom React hook `useGetSession` that fetches and returns information about an active session from an API endpoint, handling loading state and potential errors. The hook uses the `useState` and `useEffect` hooks to manage its internal state and perform the API request when the component mounts or updates. It returns an object with two properties: `isLoading` indicating whether data is being fetched and `session` containing the session details."
+                },
+                {
+                  "path": "frontend/src/utils/useGetSessionStudents.jsx",
+                  "type": "file",
+                  "explanation": "This custom React hook, `useGetSessionStudents`, fetches session students data from a specified session ID and returns an object with loading status and the fetched student array, handling errors and fetching on component mounts or re-renders if the session ID changes. It makes a GET request to a server endpoint to retrieve the student list for the given session ID."
+                },
+                {
+                  "path": "frontend/src/utils/useGetSessionStudents.test.jsx",
+                  "type": "file",
+                  "explanation": "This file contains unit tests for a custom React hook called `useGetSessionStudents` using Vitest, which is used to test the functionality of the hook when fetching session students from an API and updating the component's state accordingly. The tests verify that the hook correctly fetches data, updates its states, and returns the expected result."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "restFiles",
+      "type": "folder",
+      "explanation": "The \"restFiles\" folder contains a RESTful API test script, documenting various HTTP requests used in functional testing and integration testing of an application's authentication and user management functions.",
+      "contents": [
+        {
+          "path": "restFiles/jespTest.rest",
+          "type": "file",
+          "explanation": "This file appears to be a RESTful API test script, documenting various HTTP requests used for user registration, login, email modification, and testing coordinator functionality, likely used for functional testing or integration testing in an application. The purpose of this file is to provide a clear understanding of the expected interactions with the API during development or testing phases. It outlines specific scenarios for testing authentication flows and user management functions."
+        }
+      ]
+    }
+  ]
+}
